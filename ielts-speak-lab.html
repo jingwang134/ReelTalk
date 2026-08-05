@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReelTalk — 雅思口语通关</title>
+<style>
+:root {
+  --green: #58cc02;
+  --green-d: #46a302;
+  --green-l: #d7ffb8;
+  --blue: #1cb0f6;
+  --blue-l: #ddf4ff;
+  --red: #ff4b4b;
+  --red-l: #ffdfe0;
+  --gold: #ffc800;
+  --gold-l: #fff4cc;
+  --purple: #ce82ff;
+  --purple-l: #f5e6ff;
+  --orange: #ff9600;
+  --bg: #fff;
+  --bg2: #f7f7f7;
+  --border: #e5e5e5;
+  --text: #3c3c3c;
+  --text2: #777;
+  --text3: #afafaf;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --shadow: 0 2px 0 rgba(0,0,0,0.05);
+  --shadow-btn: 0 4px 0 rgba(0,0,0,0.1);
+  --shadow-btn-d: 0 2px 0 rgba(0,0,0,0.1);
+  --font: -apple-system, "Segoe UI", "Noto Sans SC", "PingFang SC", "Din Round Pro", sans-serif;
+  --mono: "SF Mono", "Cascadia Code", monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font);
+  background: var(--bg2); color: var(--text);
+  line-height: 1.6; -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 0 20px; height: 60px;
+  display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+}
+.logo { font-size: 22px; font-weight: 800; color: var(--green); white-space: nowrap; }
+.logo span { color: var(--text); }
+.header-stats { display: flex; align-items: center; gap: 20px; margin-left: auto; }
+.stat { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 15px; }
+.stat-icon { font-size: 20px; }
+.stat-xp { color: var(--gold); }
+.stat-streak { color: var(--orange); }
+.stat-gem { color: var(--blue); }
+
+/* Daily Goal Ring */
+.goal-ring {
+  width: 40px; height: 40px; position: relative;
+}
+.goal-ring svg { transform: rotate(-90deg); }
+.goal-ring .ring-bg { fill: none; stroke: var(--border); stroke-width: 4; }
+.goal-ring .ring-fg { fill: none; stroke: var(--green); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .5s ease; }
+.goal-ring .ring-text {
+  position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--green);
+}
+
+/* ===== TABS ===== */
+.tabs {
+  display: flex; background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 0 20px; gap: 4px;
+}
+.tab {
+  padding: 12px 20px; font-size: 14px; font-weight: 700;
+  border: none; background: transparent; color: var(--text3);
+  cursor: pointer; border-bottom: 3px solid transparent;
+  transition: all .15s; font-family: var(--font);
+  display: flex; align-items: center; gap: 6px;
+}
+.tab.active { color: var(--green); border-bottom-color: var(--green); }
+.tab:hover:not(.active) { color: var(--text2); }
+
+/* ===== VIEWS ===== */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ===== HOME: Learning Path ===== */
+.path-container {
+  max-width: 500px; margin: 0 auto; padding: 24px 20px 80px;
+}
+.path-section-title {
+  font-size: 13px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--text2);
+  margin: 24px 0 16px; text-align: center;
+}
+.path-node {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 8px; position: relative;
+}
+.path-node::after {
+  content: ''; width: 4px; height: 24px; background: var(--border);
+  border-radius: 2px; margin-top: 4px;
+}
+.path-node:last-child::after { display: none; }
+.node-btn {
+  width: 72px; height: 72px; border-radius: 50%;
+  border: none; cursor: pointer; position: relative;
+  font-family: var(--font); transition: transform .1s;
+  box-shadow: var(--shadow-btn);
+}
+.node-btn:hover { transform: translateY(-2px); }
+.node-btn:active { transform: translateY(2px); box-shadow: var(--shadow-btn-d); }
+.node-btn .node-icon { font-size: 28px; }
+.node-btn .node-stars {
+  position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 1px; background: var(--bg); padding: 2px 6px;
+  border-radius: 8px; box-shadow: var(--shadow);
+}
+.node-stars .star { font-size: 10px; }
+.node-stars .star.filled { color: var(--gold); }
+.node-stars .star.empty { color: var(--border); }
+.node-btn.locked { background: var(--border) !important; cursor: not-allowed; opacity: 0.6; }
+.node-btn.locked .node-icon { filter: grayscale(1); }
+.node-btn.completed { }
+.node-btn.available { animation: bounce 2s infinite; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.node-label {
+  font-size: 12px; font-weight: 600; color: var(--text2);
+  margin-top: 8px; text-align: center; max-width: 200px;
+}
+
+/* zigzag path offsets */
+.path-node:nth-child(odd) .node-btn { margin-left: 60px; }
+.path-node:nth-child(even) .node-btn { margin-right: 60px; }
+.path-node:nth-child(odd) .node-label { margin-left: 60px; }
+.path-node:nth-child(even) .node-label { margin-right: 60px; }
+
+/* Style selector on path */
+.style-bar {
+  max-width: 500px; margin: 0 auto; padding: 16px 20px;
+  display: flex; gap: 8px; overflow-x: auto;
+}
+.style-chip {
+  padding: 8px 16px; border-radius: 20px; border: 2px solid var(--border);
+  font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
+  background: var(--bg); transition: all .15s; font-family: var(--font);
+  display: flex; align-items: center; gap: 6px;
+}
+.style-chip.active { border-color: var(--green); background: var(--green-l); color: var(--green-d); }
+.style-chip:hover:not(.active) { border-color: var(--text3); }
+.style-chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+.style-chip .add-style { color: var(--text3); font-size: 12px; }
+
+/* ===== SESSION OVERLAY ===== */
+.session-overlay {
+  position: fixed; inset: 0; background: var(--bg); z-index: 100;
+  display: none; flex-direction: column;
+}
+.session-overlay.show { display: flex; animation: slideUp .3s ease; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.session-top {
+  padding: 16px 20px; display: flex; align-items: center; gap: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.session-close {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: var(--bg2); cursor: pointer; font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+}
+.session-progress {
+  flex: 1; height: 16px; background: var(--border); border-radius: 8px;
+  overflow: hidden; position: relative;
+}
+.session-progress-fill {
+  height: 100%; background: var(--green); border-radius: 8px;
+  transition: width .4s ease; position: relative;
+}
+.session-progress-fill::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 16px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+  border-radius: 0 8px 8px 0;
+}
+.session-hearts { display: flex; gap: 2px; font-size: 18px; }
+.session-hearts .heart.lost { filter: grayscale(1); opacity: 0.3; }
+
+.session-body {
+  flex: 1; overflow-y: auto; padding: 32px 24px;
+  display: flex; flex-direction: column;
+}
+.session-step-label {
+  font-size: 12px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--text3); margin-bottom: 8px;
+}
+.session-question {
+  font-size: 22px; font-weight: 700; margin-bottom: 24px;
+}
+
+/* Answer display */
+.answer-box {
+  background: var(--bg2); border-radius: var(--radius); padding: 24px;
+  font-size: 18px; line-height: 2; margin-bottom: 24px;
+  border: 2px solid var(--border);
+}
+.answer-box .hl {
+  background: var(--gold-l); padding: 2px 6px; border-radius: 4px;
+  cursor: pointer; transition: all .15s; font-weight: 500;
+}
+.answer-box .hl:hover { background: var(--gold); color: #fff; }
+.answer-box .hl.collected { background: var(--green-l); color: var(--green-d); }
+
+/* Listen step */
+.listen-card {
+  text-align: center; padding: 40px 20px;
+}
+.listen-btn {
+  width: 80px; height: 80px; border-radius: 50%; border: none;
+  background: var(--blue); cursor: pointer; font-size: 32px;
+  box-shadow: var(--shadow-btn); transition: transform .1s;
+  margin: 0 auto 16px; display: flex; align-items: center;
+  justify-content: center;
+}
+.listen-btn:hover { transform: translateY(-2px); }
+.listen-btn:active { transform: translateY(2px); }
+.listen-btn.playing { background: var(--green); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+.speed-row { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
+.speed-btn {
+  padding: 6px 14px; border-radius: 16px; border: 2px solid var(--border);
+  background: var(--bg); cursor: pointer; font-size: 12px; font-weight: 600;
+  font-family: var(--font); transition: all .15s;
+}
+.speed-btn.active { border-color: var(--blue); background: var(--blue-l); color: var(--blue); }
+
+/* Speak step */
+.speak-card { text-align: center; padding: 20px 0; }
+.speak-sentence {
+  font-size: 24px; line-height: 1.8; font-weight: 600;
+  margin-bottom: 24px; padding: 20px; background: var(--bg2);
+  border-radius: var(--radius); min-height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+.speak-btn {
+  width: 72px; height: 72px; border-radius: 50%; border: none;
+  background: var(--red); cursor: pointer; font-size: 28px;
+  box-shadow: var(--shadow-btn); transition: transform .1s;
+  margin: 0 auto 12px; display: flex; align-items: center;
+  justify-content: center; color: #fff;
+}
+.speak-btn:hover { transform: translateY(-2px); }
+.speak-btn:active { transform: translateY(2px); }
+.speak-btn.recording { animation: micPulse 1s infinite; }
+@keyframes micPulse {
+  0%,100% { box-shadow: 0 4px 0 rgba(0,0,0,0.1), 0 0 0 0 rgba(255,75,75,0.4); }
+  50% { box-shadow: 0 4px 0 rgba(0,0,0,0.1), 0 0 0 12px rgba(255,75,75,0); }
+}
+.speak-hint { font-size: 13px; color: var(--text2); margin-bottom: 16px; }
+.speak-result {
+  margin-top: 16px; padding: 16px; border-radius: var(--radius);
+  font-size: 16px; font-weight: 600; display: none;
+}
+.speak-result.show { display: block; animation: popIn .3s ease; }
+@keyframes popIn { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+.speak-result.good { background: var(--green-l); color: var(--green-d); }
+.speak-result.ok { background: var(--gold-l); color: #8a6d14; }
+.speak-result.bad { background: var(--red-l); color: var(--red); }
+
+/* Collect step */
+.collect-card { padding: 20px 0; }
+.collect-hint {
+  font-size: 14px; color: var(--text2); margin-bottom: 16px;
+  text-align: center;
+}
+.collect-grid {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+}
+.collect-chip {
+  padding: 10px 18px; border-radius: 20px; font-size: 15px; font-weight: 600;
+  background: var(--bg2); border: 2px solid var(--border);
+  cursor: pointer; transition: all .15s; font-family: var(--font);
+}
+.collect-chip:hover { border-color: var(--gold); }
+.collect-chip.collected {
+  background: var(--green-l); border-color: var(--green); color: var(--green-d);
+}
+.collect-chip .check { margin-left: 6px; }
+
+/* Session bottom bar */
+.session-bottom {
+  padding: 16px 24px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.session-feedback { font-size: 14px; font-weight: 600; }
+
+/* Completion screen */
+.complete-screen {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 40px;
+  text-align: center;
+}
+.complete-icon { font-size: 80px; margin-bottom: 16px; animation: bounce 1s ease; }
+.complete-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.complete-sub { font-size: 16px; color: var(--text2); margin-bottom: 32px; }
+.complete-stats {
+  display: flex; gap: 16px; margin-bottom: 32px;
+}
+.complete-stat {
+  background: var(--bg2); border-radius: var(--radius);
+  padding: 16px 24px; text-align: center; min-width: 100px;
+}
+.complete-stat .val { font-size: 24px; font-weight: 800; color: var(--green); }
+.complete-stat .lbl { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+/* ===== LAB VIEW ===== */
+.lab-view { max-width: 600px; margin: 0 auto; padding: 24px 20px 80px; }
+.lab-section {
+  background: var(--bg); border-radius: var(--radius); padding: 20px;
+  margin-bottom: 16px; border: 1px solid var(--border);
+}
+.lab-section h3 {
+  font-size: 16px; font-weight: 800; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 6px;
+}
+.lab-textarea {
+  width: 100%; min-height: 120px; border: 2px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px;
+  font-family: var(--mono); font-size: 13px; line-height: 1.7;
+  resize: vertical; background: var(--bg2); outline: none;
+  transition: border-color .2s;
+}
+.lab-textarea:focus { border-color: var(--green); }
+.lab-input {
+  width: 100%; padding: 10px 14px; border: 2px solid var(--border);
+  border-radius: var(--radius-xs); font-size: 14px;
+  outline: none; background: var(--bg2); font-family: var(--font);
+}
+.lab-input:focus { border-color: var(--green); }
+.lab-row { display: flex; gap: 8px; margin-top: 8px; }
+.lab-select {
+  flex: 1; padding: 10px 14px; border: 2px solid var(--border);
+  border-radius: var(--radius-xs); font-size: 14px;
+  background: var(--bg2); outline: none; font-family: var(--font); cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  padding: 14px 24px; border: none; border-radius: var(--radius-sm);
+  font-size: 15px; font-weight: 800; cursor: pointer;
+  transition: all .1s; font-family: var(--font); letter-spacing: 0.3px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  text-transform: uppercase;
+}
+.btn:active { transform: translateY(2px); }
+.btn-green { background: var(--green); color: #fff; box-shadow: 0 4px 0 var(--green-d); }
+.btn-green:active { box-shadow: 0 2px 0 var(--green-d); }
+.btn-blue { background: var(--blue); color: #fff; box-shadow: 0 4px 0 #1899d6; }
+.btn-blue:active { box-shadow: 0 2px 0 #1899d6; }
+.btn-gray { background: var(--bg2); color: var(--text2); border: 2px solid var(--border); box-shadow: 0 4px 0 var(--border); }
+.btn-gray:active { box-shadow: 0 2px 0 var(--border); }
+.btn-block { width: 100%; }
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+.btn-xs { padding: 4px 10px; font-size: 11px; border-radius: var(--radius-xs); }
+
+/* Corpus item */
+.corpus-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px; margin-bottom: 8px;
+  position: relative; transition: all .15s;
+}
+.corpus-item:hover { border-color: var(--green); }
+.corpus-preview {
+  font-family: var(--mono); font-size: 12px; line-height: 1.6;
+  color: var(--text2); max-height: 40px; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.corpus-meta {
+  display: flex; justify-content: space-between; align-items: center; margin-top: 8px;
+  font-size: 11px; color: var(--text3);
+}
+.corpus-profile-badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 700;
+}
+.corpus-del {
+  position: absolute; right: 8px; top: 8px; width: 24px; height: 24px;
+  border-radius: 50%; border: none; background: var(--bg); cursor: pointer;
+  font-size: 14px; color: var(--text3); display: flex; align-items: center;
+  justify-content: center; opacity: 0; transition: opacity .15s;
+}
+.corpus-item:hover .corpus-del { opacity: 1; }
+.corpus-del:hover { background: var(--red-l); color: var(--red); }
+
+/* Profile cards */
+.profile-item {
+  background: var(--bg2); border: 2px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px; margin-bottom: 8px;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: all .15s;
+}
+.profile-item:hover { border-color: var(--green); }
+.profile-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.profile-name .pdot { width: 10px; height: 10px; border-radius: 50%; }
+.profile-stats { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.profile-actions { display: flex; gap: 4px; }
+
+/* Analysis display */
+.analysis-box {
+  background: var(--bg2); border-radius: var(--radius-sm); padding: 16px;
+  margin-top: 12px; font-size: 13px;
+}
+.analysis-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.analysis-pill {
+  background: var(--bg); padding: 4px 10px; border-radius: 12px;
+  font-size: 12px; border: 1px solid var(--border); font-weight: 600;
+}
+.analysis-pill.green { background: var(--green-l); color: var(--green-d); border-color: transparent; }
+.analysis-pill.blue { background: var(--blue-l); color: var(--blue); border-color: transparent; }
+.analysis-pill.gold { background: var(--gold-l); color: #8a6d14; border-color: transparent; }
+.analysis-pill.purple { background: var(--purple-l); color: var(--purple); border-color: transparent; }
+
+/* ===== BANK VIEW ===== */
+.bank-view { max-width: 600px; margin: 0 auto; padding: 24px 20px 80px; }
+.bank-header {
+  text-align: center; margin-bottom: 24px;
+}
+.bank-header h2 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+.bank-header p { font-size: 14px; color: var(--text2); }
+
+.expr-card {
+  background: var(--bg); border: 2px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 12px;
+  transition: all .15s; cursor: pointer;
+}
+.expr-card:hover { border-color: var(--green); transform: translateY(-1px); }
+.expr-card .expr-text {
+  font-size: 18px; font-weight: 600; margin-bottom: 6px;
+}
+.expr-card .expr-meta {
+  font-size: 12px; color: var(--text3); display: flex; gap: 10px;
+  align-items: center;
+}
+.expr-card .expr-profile {
+  padding: 2px 8px; border-radius: 8px; font-size: 10px; font-weight: 700;
+}
+.expr-card .expr-del {
+  float: right; width: 28px; height: 28px; border-radius: 50%;
+  border: none; background: transparent; cursor: pointer; color: var(--text3);
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+}
+.expr-card .expr-del:hover { background: var(--red-l); color: var(--red); }
+
+.bank-empty {
+  text-align: center; padding: 60px 20px; color: var(--text3);
+}
+.bank-empty .emoji { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+
+/* Review mode */
+.review-card {
+  background: var(--bg); border: 2px solid var(--border);
+  border-radius: var(--radius); padding: 32px 24px; text-align: center;
+}
+.review-expr { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+.review-meta { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+.review-actions { display: flex; gap: 8px; justify-content: center; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--text); color: #fff; padding: 12px 24px;
+  border-radius: 24px; font-size: 14px; font-weight: 600;
+  z-index: 200; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  animation: tIn .3s ease, tOut .3s ease 2s forwards;
+  pointer-events: none;
+}
+@keyframes tIn { from{opacity:0;transform:translateX(-50%) translateY(10px)} }
+@keyframes tOut { to{opacity:0;transform:translateX(-50%) translateY(10px)} }
+
+/* Modal */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 150;
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn .2s;
+}
+@keyframes fadeIn { from{opacity:0} }
+.modal-box {
+  background: var(--bg); border-radius: var(--radius); padding: 24px;
+  width: 360px; max-width: 90vw;
+}
+.modal-box h3 { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+.modal-box .lab-input { margin-bottom: 12px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+
+/* Achievement popup */
+.achievement-popup {
+  position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+  background: var(--bg); border: 2px solid var(--gold); border-radius: var(--radius);
+  padding: 16px 24px; z-index: 200; text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  animation: dropIn .4s ease, dropOut .4s ease 2.5s forwards;
+}
+@keyframes dropIn { from{opacity:0;transform:translateX(-50%) translateY(-20px)} }
+@keyframes dropOut { to{opacity:0;transform:translateX(-50%) translateY(-20px)} }
+.achievement-popup .ach-icon { font-size: 36px; }
+.achievement-popup .ach-title { font-size: 16px; font-weight: 800; margin-top: 4px; }
+.achievement-popup .ach-desc { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+
+@media (max-width: 600px) {
+  .header { padding: 0 12px; gap: 8px; }
+  .header-stats { gap: 12px; }
+  .stat { font-size: 13px; }
+  .logo { font-size: 18px; }
+  .path-node:nth-child(odd) .node-btn { margin-left: 20px; }
+  .path-node:nth-child(even) .node-btn { margin-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="logo">Reel<span>Talk</span></div>
+  <div class="header-stats">
+    <div class="stat stat-xp"><span class="stat-icon">⚡</span><span id="xpDisplay">0</span></div>
+    <div class="stat stat-streak"><span class="stat-icon">🔥</span><span id="streakDisplay">0</span></div>
+    <div class="goal-ring" id="goalRing" title="每日目标">
+      <svg width="40" height="40">
+        <circle class="ring-bg" cx="20" cy="20" r="16"></circle>
+        <circle class="ring-fg" cx="20" cy="20" r="16" id="ringFg"
+          stroke-dasharray="100.5" stroke-dashoffset="100.5"></circle>
+      </svg>
+      <div class="ring-text" id="ringText">0/3</div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== TABS ===== -->
+<nav class="tabs">
+  <button class="tab active" onclick="switchTab('home')">🏠 学习路径</button>
+  <button class="tab" onclick="switchTab('lab')">🧪 语料实验室</button>
+  <button class="tab" onclick="switchTab('bank')">📚 表达记忆库</button>
+</nav>
+
+<!-- ===== HOME VIEW ===== -->
+<div class="view active" id="homeView">
+  <div class="style-bar" id="styleBar"></div>
+  <div class="path-container" id="pathContainer"></div>
+</div>
+
+<!-- ===== LAB VIEW ===== -->
+<div class="view" id="labView">
+  <div class="lab-view">
+    <!-- Corpus Input -->
+    <div class="lab-section">
+      <h3>📥 投喂语料</h3>
+      <textarea class="lab-textarea" id="corpusInput" placeholder="粘贴美剧/综艺/访谈/脱口秀对话…
+
+系统会自动分析：
+· 高频词汇 & 短语 (n-grams)
+· 句式结构 & 平均句长
+· 话语标记 (discourse markers)
+· 语气基调 (tone)
+· 正式度评分 (formality)"></textarea>
+      <div class="lab-row">
+        <input class="lab-input" id="corpusSource" placeholder="来源 (e.g. Modern Family S03E05)" style="flex:1;">
+      </div>
+      <div class="lab-row">
+        <select class="lab-select" id="corpusProfile">
+          <option value="">→ 分配到风格档案</option>
+        </select>
+      </div>
+      <button class="btn btn-green btn-block" style="margin-top:12px;" onclick="submitCorpus()">
+        🔍 分析并添加
+      </button>
+    </div>
+
+    <!-- Analysis Result -->
+    <div class="lab-section" id="analysisSection" style="display:none;">
+      <h3>📊 最新分析结果</h3>
+      <div id="analysisContent"></div>
+    </div>
+
+    <!-- Corpus List -->
+    <div class="lab-section">
+      <h3>📚 语料库 <span style="font-size:12px;color:var(--text3);font-weight:400;" id="corpusCountLabel">(0)</span></h3>
+      <div id="corpusList"></div>
+    </div>
+
+    <!-- Style Profiles -->
+    <div class="lab-section">
+      <h3>🎨 风格档案
+        <button class="btn btn-gray btn-xs" onclick="showCreateProfile()" style="margin-left:auto;">+ 新建</button>
+      </h3>
+      <div id="profileList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BANK VIEW ===== -->
+<div class="view" id="bankView">
+  <div class="bank-view">
+    <div class="bank-header">
+      <h2>📚 表达记忆库</h2>
+      <p>在练习中点击高亮表达即可收藏到这里</p>
+    </div>
+    <div id="bankContent"></div>
+    <div style="margin-top:16px;" id="bankActions" style="display:none;">
+      <button class="btn btn-blue btn-block" onclick="startReview()">🔄 开始复习 (闪卡模式)</button>
+      <button class="btn btn-gray btn-block" style="margin-top:8px;" onclick="exportExpressions()">📋 导出清单</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SESSION OVERLAY ===== -->
+<div class="session-overlay" id="sessionOverlay">
+  <div class="session-top">
+    <button class="session-close" onclick="exitSession()">✕</button>
+    <div class="session-progress"><div class="session-progress-fill" id="sessionProgress" style="width:0%;"></div></div>
+    <div class="session-hearts" id="sessionHearts"></div>
+  </div>
+  <div class="session-body" id="sessionBody"></div>
+  <div class="session-bottom" id="sessionBottom" style="display:none;">
+    <div class="session-feedback" id="sessionFeedback"></div>
+    <button class="btn btn-green" id="sessionNextBtn" onclick="nextStep()">继续 ➡</button>
+  </div>
+</div>
+
+<!-- Modal Container -->
+<div id="modalContainer"></div>
+<!-- Toast Container -->
+<div id="toastContainer"></div>
+
+<script>
+// ============================================================
+//  STATE
+// ============================================================
+const S = {
+  // Gamification
+  xp: 0,
+  streak: 0,
+  lastPracticeDate: null,
+  dailyGoal: 3,
+  dailyProgress: 0,
+  dailyDate: null,
+  // Data
+  corpus: [],
+  profiles: [],
+  expressions: [],
+  activeStyle: null,
+  // Session
+  session: null,
+  // Topic progress
+  topicProgress: {},  // {topicId: {stars, attempts, bestScore, lastPracticed}}
+};
+
+// ============================================================
+//  TOPICS
+// ============================================================
+const TOPICS = [
+  { part: 1, id: 'hometown', name: 'Hometown', icon: '🏠', color: '#58cc02' },
+  { part: 1, id: 'work-study', name: 'Work or Study', icon: '💼', color: '#1cb0f6' },
+  { part: 1, id: 'hobbies', name: 'Hobbies & Free Time', icon: '🎨', color: '#ce82ff' },
+  { part: 1, id: 'food', name: 'Food & Cooking', icon: '🍜', color: '#ff9600' },
+  { part: 1, id: 'weather', name: 'Weather & Seasons', icon: '☀️', color: '#1cb0f6' },
+  { part: 1, id: 'music', name: 'Music', icon: '🎵', color: '#ce82ff' },
+  { part: 1, id: 'travel', name: 'Travel', icon: '✈️', color: '#58cc02' },
+  { part: 1, id: 'family', name: 'Family & Friends', icon: '👨‍👩‍👧', color: '#ff4b4b' },
+  { part: 1, id: 'tech', name: 'Technology', icon: '📱', color: '#1cb0f6' },
+  { part: 1, id: 'sports', name: 'Sports', icon: '⚽', color: '#ff9600' },
+  { part: 2, id: 'person-admire', name: 'A Person You Admire', icon: '⭐', color: '#ffc800' },
+  { part: 2, id: 'memorable-trip', name: 'A Memorable Trip', icon: '🗺️', color: '#58cc02' },
+  { part: 2, id: 'important-event', name: 'An Important Event', icon: '🎉', color: '#ff4b4b' },
+  { part: 2, id: 'favorite-place', name: 'Your Favorite Place', icon: '📍', color: '#1cb0f6' },
+  { part: 2, id: 'book-movie', name: 'A Book or Movie', icon: '🎬', color: '#ce82ff' },
+  { part: 2, id: 'skill-learned', name: 'A Skill You Learned', icon: '🔧', color: '#ff9600' },
+  { part: 2, id: 'childhood-memory', name: 'A Childhood Memory', icon: '🧸', color: '#ffc800' },
+  { part: 2, id: 'difficult-decision', name: 'A Difficult Decision', icon: '🤔', color: '#ce82ff' },
+  { part: 3, id: 'environment', name: 'Environment', icon: '🌱', color: '#58cc02' },
+  { part: 3, id: 'education', name: 'Education', icon: '🎓', color: '#1cb0f6' },
+  { part: 3, id: 'culture', name: 'Culture & Tradition', icon: '🏮', color: '#ff9600' },
+  { part: 3, id: 'work-life', name: 'Work-Life Balance', icon: '⚖️', color: '#ce82ff' },
+  { part: 3, id: 'social-media', name: 'Social Media Impact', icon: '💬', color: '#1cb0f6' },
+  { part: 3, id: 'urbanization', name: 'City vs Countryside', icon: '🏙️', color: '#58cc02' },
+];
+
+// ============================================================
+//  NLP: CORPUS ANALYZER (same engine as v2)
+// ============================================================
+const STOP_WORDS = new Set(['the','a','an','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','could','should','may','might','can','shall','i','you','he','she','it','we','they','me','him','her','us','them','my','your','his','its','our','their','this','that','these','those','am','of','in','to','for','on','with','at','from','by','about','as','into','through','during','before','after','above','below','between','out','off','over','under','again','further','then','once','here','there','when','where','why','how','all','both','each','few','more','most','other','some','such','no','nor','not','only','own','same','so','than','too','very','just','because','but','and','or','if','while','up','down','what','which','who','whom','also','even','still','yet','now','really','actually','like','got','get','go','going','said','say','says','know','think','make','made','come','came','take','took','see','saw','want','need','well','yeah','yes','oh','uh','um','er','ah','mm','hmm']);
+
+const DISCOURSE_MARKERS = ['you know','i mean','like','so','anyway','right','okay','well','look','honestly','basically','literally','actually','obviously','seriously','here is the thing','the thing is','let me tell you','not gonna lie','to be honest','at the end of the day','when it comes down to it','i feel like','the way i see it','if you ask me','to be fair','in a way','kind of','sort of','you see','come on','listen','i guess','bible','chef kiss','obsessed'];
+
+const TONE_PATTERNS = {
+  enthusiastic: ['love','amazing','incredible','obsessed','literally','bible','iconic','everything','best','perfect','unreal'],
+  self_deprecating: ['terrible at','not great','embarrassing','awkward','typical','disaster','mess','of course i','somehow'],
+  sarcastic: ['obviously','clearly','what a surprise','shocking','who would have thought'],
+  warm: ['sweet','lovely','caring','family','together','home','cozy','comfort','blessed','grateful'],
+  dramatic: ['literally','obsessed','cannot even','dying','dead','shook','speechless'],
+  deadpan: ['i guess','whatever','it is fine','not bad','could be worse','kind of','sort of','maybe'],
+};
+
+function analyzeCorpus(text) {
+  const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 5);
+  const words = text.toLowerCase().split(/[\s,;:—\-"""'''()\[\]…]+/).filter(w => w.length > 0);
+  const contentWords = words.filter(w => !STOP_WORDS.has(w) && w.length > 2);
+  const freq = {};
+  contentWords.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+  const topWords = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([w,c])=>({word:w,count:c}));
+  const bigrams = {}; const trigrams = {};
+  for (let i=0;i<words.length-1;i++){const bg=`${words[i]} ${words[i+1]}`;if(bg.split(' ').some(w=>!STOP_WORDS.has(w)||w.length<=2))bigrams[bg]=(bigrams[bg]||0)+1;}
+  for (let i=0;i<words.length-2;i++){const tg=`${words[i]} ${words[i+1]} ${words[i+2]}`;trigrams[tg]=(trigrams[tg]||0)+1;}
+  const topBigrams = Object.entries(bigrams).filter(([_,c])=>c>=2).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([p,c])=>({phrase:p,count:c}));
+  const topTrigrams = Object.entries(trigrams).filter(([_,c])=>c>=2).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([p,c])=>({phrase:p,count:c}));
+  const openers = sentences.map(s=>s.split(' ').slice(0,3).join(' ').toLowerCase()).filter(o=>o.length>3);
+  const openerFreq = {}; openers.forEach(o=>{openerFreq[o]=(openerFreq[o]||0)+1;});
+  const topOpeners = Object.entries(openerFreq).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([o,c])=>({phrase:o,count:c}));
+  const lowerText = ' ' + text.toLowerCase() + ' ';
+  const foundMarkers = DISCOURSE_MARKERS.filter(m => lowerText.includes(' '+m+' ')||lowerText.includes(' '+m+',')||lowerText.includes(' '+m+'.'));
+  const sentLengths = sentences.map(s=>s.split(' ').length);
+  const avgSentLen = sentLengths.length ? Math.round(sentLengths.reduce((a,b)=>a+b,0)/sentLengths.length) : 0;
+  const contractions = (text.toLowerCase().match(/\b(it's|don't|can't|won't|isn't|aren't|didn't|doesn't|i'm|you're|they're|we're|that's|what's|let's|gonna|wanna|gotta|kinda|sorta)\b/g)||[]).length;
+  const complexWords = contentWords.filter(w=>w.length>6).length;
+  const totalWords = words.length;
+  const formality = Math.round(Math.max(1,Math.min(10,8-(totalWords>0?contractions/totalWords*40:0)+(totalWords>0?complexWords/totalWords*15:0))));
+  const tones = {};
+  for (const [tone,kws] of Object.entries(TONE_PATTERNS)){let h=0;kws.forEach(kw=>{if(lowerText.includes(kw))h++;});if(h>0)tones[tone]=Math.round(h/kws.length*10);}
+  const primaryTone = Object.entries(tones).sort((a,b)=>b[1]-a[1])[0];
+  const sigExpr = topTrigrams.filter(t=>t.count>=2).map(t=>t.phrase);
+  return {
+    wordCount: totalWords, sentenceCount: sentences.length,
+    topWords: topWords.slice(0,10), topBigrams, topTrigrams, topOpeners,
+    discourseMarkers: foundMarkers, avgSentLen,
+    formality, primaryTone: primaryTone?{tone:primaryTone[0],intensity:primaryTone[1]}:null,
+    allTones: tones, exclamationCount: (text.match(/!/g)||[]).length,
+    questionCount: (text.match(/\?/g)||[]).length,
+    contractionRate: Math.round((totalWords>0?contractions/totalWords:0)*100),
+    complexWordRate: Math.round((totalWords>0?complexWords/totalWords:0)*100),
+    sigExpr,
+  };
+}
+
+// ============================================================
+//  STYLE DNA & GENERATION
+// ============================================================
+function buildProfileDNA(pid) {
+  const items = S.corpus.filter(c=>c.profileId===pid&&c.analysis);
+  if (!items.length) return null;
+  const wordMap={};const bgMap={};const tgMap={};const opMap={};
+  const markers=new Set();let tw=0,ts=0,sl=0,fs=0;
+  const toneAgg={};let ex=0,q=0,cr=0,cwr=0;const sig=new Set();
+  items.forEach(it=>{const a=it.analysis;
+    a.topWords.forEach(w=>{wordMap[w.word]=(wordMap[w.word]||0)+w.count;});
+    a.topBigrams.forEach(b=>{bgMap[b.phrase]=(bgMap[b.phrase]||0)+b.count;});
+    a.topTrigrams.forEach(t=>{tgMap[t.phrase]=(tgMap[t.phrase]||0)+t.count;});
+    a.topOpeners.forEach(o=>{opMap[o.phrase]=(opMap[o.phrase]||0)+o.count;});
+    a.discourseMarkers.forEach(m=>markers.add(m));
+    tw+=a.wordCount;ts+=a.sentenceCount;sl+=a.avgSentLen*a.sentenceCount;fs+=a.formality;
+    if(a.primaryTone)toneAgg[a.primaryTone.tone]=(toneAgg[a.primaryTone.tone]||0)+a.primaryTone.intensity;
+    ex+=a.exclamationCount;q+=a.questionCount;cr+=a.contractionRate;cwr+=a.complexWordRate;
+    a.sigExpr.forEach(e=>sig.add(e));
+  });
+  const n=items.length;
+  const topWords=Object.entries(wordMap).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([w,c])=>({word:w,count:c}));
+  const topPhrases=Object.entries(bgMap).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([p,c])=>({phrase:p,count:c}));
+  const topExpr=Object.entries(tgMap).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([p,c])=>({phrase:p,count:c}));
+  const topOpeners=Object.entries(opMap).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([p,c])=>({phrase:p,count:c}));
+  const pt=Object.entries(toneAgg).sort((a,b)=>b[1]-a[1])[0];
+  return {
+    corpusCount:n,totalWords:tw,totalSentences:ts,topWords,topPhrases,topExpr,topOpeners,
+    discourseMarkers:Array.from(markers),avgSentLen:Math.round(sl/Math.max(1,ts)),
+    formality:Math.round(fs/n),primaryTone:pt?{tone:pt[0],intensity:Math.round(pt[1]/n)}:null,
+    exclamationRate:Math.round(ex/Math.max(1,ts)*100),questionRate:Math.round(q/Math.max(1,ts)*100),
+    contractionRate:Math.round(cr/n),complexWordRate:Math.round(cwr/n),sigExpr:Array.from(sig),
+  };
+}
+
+const BASE_ANSWERS = {
+  hometown: "My hometown is a place that holds many memories for me. It's not the biggest or most famous city, but it has its own unique charm. The people there are warm and welcoming, and there's a real sense of community. There are some nice parks, local restaurants that serve great food, and the pace of life is more relaxed compared to big cities. I have a lot of affection for it, and I always look forward to going back whenever I've been away for a while.",
+  family: "Family is incredibly important to me. We may not always agree on everything, and there are definitely moments of tension, but at the end of the day, we're always there for each other. My parents have taught me so much about life, about working hard, and about being a decent person. The older I get, the more I appreciate everything they've done for me. Family gatherings can be chaotic, but they're also when I feel most at home.",
+  'work-study': "I'm currently focused on my studies and career, and it's been quite a journey. Some days are more productive than others, but I genuinely enjoy what I do. There's always something new to learn, and that keeps things interesting. Of course, there are challenges — deadlines, pressure, the occasional setback — but I think that's part of what makes it meaningful. I try to maintain a good balance and not take things too seriously.",
+  food: "I'm really into food — not just eating it, but the whole experience around it. I love trying new cuisines and discovering hole-in-the-wall restaurants that serve amazing dishes. Cooking is something I've been getting into more as well. There's something very satisfying about making a meal from scratch and sharing it with people you care about. Food has this amazing ability to bring people together.",
+  travel: "Traveling has been one of the most enriching experiences of my life. Every new place teaches you something — about the world, about other cultures, and about yourself. I've had trips that went perfectly and trips where everything went wrong, and honestly, the ones that went wrong often make for the best stories later. I believe stepping out of your comfort zone is one of the best forms of education.",
+  hobbies: "In my free time, I have a few different things I like to do. I'm the kind of person who needs to stay busy, otherwise I start to feel restless. Whether it's reading, watching shows, going out with friends, or just taking a walk to clear my head — I think having hobbies is essential for mental health. It gives you something to look forward to outside of work or school.",
+  weather: "I actually enjoy all kinds of weather. There's something nice about a sunny day that makes you want to go outside and be active, but there's also something cozy about a rainy day when you can stay indoors with a book and a cup of tea. I think weather affects mood more than people realize. My favorite season is probably autumn — not too hot, not too cold, and the colors are beautiful.",
+  music: "Music is a huge part of my life. I listen to something every day, and what I choose depends on my mood. When I need to focus, I go for instrumental or lo-fi. When I want to relax, I put on something acoustic. And when I need energy, nothing beats a good playlist with some upbeat tracks. I also enjoy discovering new artists and going to live shows when I can.",
+  sports: "I try to stay active, though I wouldn't call myself a serious athlete. I enjoy going for runs, playing casual sports with friends, and occasionally hitting the gym. I think the key is finding activities you actually enjoy, because otherwise it becomes a chore. For me, it's more about feeling good and having energy than about competition or performance.",
+  tech: "Technology is both a blessing and a curse in my life. On one hand, it makes everything more convenient — I can stay connected with people, work from anywhere, and access information instantly. On the other hand, I sometimes find myself spending too much time on my phone, scrolling through social media without any real purpose. I'm trying to be more mindful about my screen time.",
+  'person-admire': "The person I admire most is probably my grandmother. She grew up in a time when opportunities for women were extremely limited, and yet she managed to raise a family, build a career, and earn the respect of everyone who knew her. What I admire most about her is her resilience — no matter what life threw at her, she always found a way to move forward. She taught me that strength isn't about never falling, it's about getting back up.",
+  'memorable-trip': "The most memorable trip I've taken was a solo journey to a small coastal town. I had just gone through a difficult period and needed time to think. What was supposed to be a quiet getaway turned into one of the most transformative experiences of my life. I met incredible people, tried things I'd never done before, and came back with a completely different perspective on what matters.",
+  'important-event': "One of the most important events in my life was when I decided to change my career path. I had been doing something that looked good on paper but didn't fulfill me at all. Making that decision was terrifying — there was no guarantee it would work out. But looking back, it was the best choice I ever made. It taught me that sometimes the scariest decisions are the ones that lead to the most growth.",
+  'favorite-place': "My favorite place in the world is a small cafe near my old apartment. It's nothing fancy — worn-out couches, mismatched mugs, and a handwritten menu. But there's something about the atmosphere that makes me feel completely at ease. I've had some of my best ideas there, had conversations that changed my perspective, and spent countless hours just watching the world go by.",
+  'book-movie': "A book that had a profound impact on me was one I read during a transition period in my life. It wasn't a bestseller or a classic — just a quiet story about ordinary people navigating difficult choices. What struck me was how the author captured the small, everyday moments that feel insignificant but actually shape who we become. It made me pay more attention to the little things in my own life.",
+  'skill-learned': "The most valuable skill I've learned is probably how to communicate effectively. It sounds simple, but it took me years to realize that communication isn't just about talking — it's about listening, understanding the other person's perspective, and expressing yourself in a way that's honest without being harsh. Once I started practicing this consciously, my relationships improved dramatically.",
+  'childhood-memory': "One of my favorite childhood memories is of summer evenings spent playing outside until the streetlights came on. We had a whole group of neighborhood kids, and we'd invent elaborate games that made no sense but felt like the most important thing in the world. There was a sense of freedom and possibility that I think gets lost as we grow up and start worrying about consequences.",
+  'difficult-decision': "The most difficult decision I've had to make was choosing between two paths that both felt right in different ways. One was safe and familiar, the other was risky but exciting. I spent weeks going back and forth, making lists, talking to everyone I trusted. In the end, I went with the risky option. It hasn't always been easy, but I've never regretted it. I learned that there's rarely a perfect choice — just the one you commit to.",
+  environment: "I think environmental issues are among the most pressing challenges we face today. The problem is that they often feel too big for any individual to tackle, which leads to a kind of paralysis. But I believe small actions matter — reducing waste, being mindful of consumption, supporting sustainable businesses. The real change needs to come from policy and corporate action, but individual awareness is where it starts.",
+  education: "I believe education is the most powerful tool we have for creating positive change. But I also think our current system has significant flaws — it tends to prioritize memorization over critical thinking, and standardized testing often measures the wrong things. The best education I've received hasn't always come from a classroom. Sometimes it's come from a conversation, a book, or a failure that taught me something school never could.",
+  culture: "Cultural traditions are fascinating because they reveal what a community values and how they see the world. Growing up between cultures, I've learned to appreciate both the comfort of belonging to a tradition and the growth that comes from stepping outside your own. I think the healthiest approach is to hold onto the parts of your culture that give you roots, while staying open to ideas that challenge you to grow.",
+  'work-life': "Work-life balance is something I've struggled with for years. We live in a culture that glorifies hustle and constant productivity, but I've come to realize that burnout doesn't make you more successful — it just makes you miserable. I'm learning to set boundaries, to disconnect after work, and to find value in rest. It's still a work in progress, but I'm getting better at it.",
+  'social-media': "Social media has fundamentally changed how we connect, communicate, and perceive ourselves. There are undeniable benefits — staying in touch, discovering communities, accessing information. But the downsides are real too: the comparison trap, the dopamine cycle, the way it can distort reality. I think the key is using it intentionally rather than reflexively, and being honest with yourself about how it makes you feel.",
+  urbanization: "The debate between city life and countryside living is really a question of what you value most. Cities offer energy, diversity, and opportunity, but they can also be overwhelming and isolating. The countryside offers peace, space, and community, but can feel limiting. I've lived in both, and I think the ideal is somewhere in between — a place that has enough going on to keep you engaged, but slow enough to let you breathe.",
+};
+
+function getBaseAnswer(topicId) {
+  return BASE_ANSWERS[topicId] || "This is something I've thought about quite a bit actually. I think there are different ways to look at it, and my perspective has evolved over time. What matters most, I believe, is being genuine and true to yourself. Everyone has their own journey, and comparison is really the thief of joy. I try to approach things with an open mind and not take myself too seriously.";
+}
+
+function applyStyleTransform(base, dna) {
+  if (!dna || dna.corpusCount === 0) return base;
+  let result = base;
+  const sentences = result.split(/(?<=[.!?])\s+/);
+  // 1. Discourse markers
+  if (dna.discourseMarkers?.length > 0) {
+    const markers = dna.discourseMarkers;
+    const rate = Math.min(0.45, markers.length * 0.08);
+    sentences.forEach((s, i) => {
+      if (i > 0 && Math.random() < rate) {
+        const m = markers[Math.floor(Math.random() * markers.length)];
+        const prefix = m.charAt(0).toUpperCase() + m.slice(1);
+        sentences[i] = prefix + ', ' + s.charAt(0).toLowerCase() + s.slice(1);
+      }
+    });
+    result = sentences.join(' ');
+  }
+  // 2. Vocab replacement
+  if (dna.topWords?.length > 3) {
+    const sw = dna.topWords.slice(0, 8).map(w => w.word);
+    const subs = {
+      good: sw.find(w => ['amazing','incredible','fantastic','great','perfect','awesome'].includes(w)),
+      nice: sw.find(w => ['lovely','sweet','charming','beautiful','cozy'].includes(w)),
+      important: sw.find(w => ['everything','huge','massive','big','major'].includes(w)),
+      like: sw.find(w => ['love','obsessed','adore','enjoy','into'].includes(w)),
+      interesting: sw.find(w => ['fascinating','crazy','wild','fun','exciting'].includes(w)),
+    };
+    for (const [from, to] of Object.entries(subs)) {
+      if (to) result = result.replace(new RegExp('\\b'+from+'\\b','gi'), to);
+    }
+  }
+  // 3. Signature expression
+  if (dna.sigExpr?.length > 0 && Math.random() < 0.6) {
+    const sig = dna.sigExpr[Math.floor(Math.random() * dna.sigExpr.length)];
+    const lp = result.lastIndexOf('.');
+    if (lp > 0) result = result.slice(0, lp+1) + ' ' + sig.charAt(0).toUpperCase() + sig.slice(1) + '.' + result.slice(lp+1);
+  }
+  // 4. Sentence structure
+  if (dna.avgSentLen < 10) {
+    result = result.replace(/(\w),\s*and\s+/g, '$1. And ');
+  } else if (dna.avgSentLen > 20) {
+    result = result.replace(/\. ([A-Z])/g, (m, l) => Math.random() < 0.3 ? ', and ' + l.toLowerCase() : m);
+  }
+  // 5. Tone
+  if (dna.primaryTone) {
+    const t = dna.primaryTone.tone;
+    if (t === 'enthusiastic' || t === 'dramatic') {
+      result = result.replace(/\bgood\b/gi, 'amazing').replace(/\bnice\b/gi, 'incredible');
+    } else if (t === 'self_deprecating' || t === 'deadpan') {
+      result = result.replace(/\b(great|wonderful|fantastic)\b/gi, 'not bad').replace(/\b(love|adore)\b/gi, 'kind of like');
+    }
+  }
+  // 6. Formality
+  if (dna.formality <= 3) {
+    result = result.replace(/\bI am\b/g, "I'm").replace(/\bdo not\b/gi, "don't")
+      .replace(/\bthat is\b/gi, "that's").replace(/\bgoing to\b/gi, "gonna").replace(/\bwant to\b/gi, "wanna");
+  } else if (dna.formality >= 7) {
+    result = result.replace(/\bI'm\b/g, 'I am').replace(/\bdon't\b/gi, 'do not').replace(/\bthat's\b/gi, 'that is');
+  }
+  // 7. Exclamation
+  if (dna.exclamationRate > 20 && Math.random() < 0.4) result = result.replace(/\.$/, '!');
+  return result;
+}
+
+// ============================================================
+//  GAMIFICATION
+// ============================================================
+function addXP(amount, reason) {
+  S.xp += amount;
+  saveData();
+  updateHeader();
+  if (reason) toast(`+${amount} XP · ${reason}`);
+}
+
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (S.lastPracticeDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    if (S.lastPracticeDate === yesterday) {
+      S.streak++;
+    } else if (S.lastPracticeDate !== today) {
+      S.streak = 1;
+    }
+    S.lastPracticeDate = today;
+  }
+  saveData();
+}
+
+function updateDailyGoal() {
+  const today = new Date().toDateString();
+  if (S.dailyDate !== today) {
+    S.dailyDate = today;
+    S.dailyProgress = 0;
+  }
+  S.dailyProgress++;
+  saveData();
+  updateHeader();
+  if (S.dailyProgress >= S.dailyGoal && S.dailyProgress === S.dailyGoal) {
+    showAchievement('🎯', '每日目标达成！', `完成 ${S.dailyGoal} 个练习`);
+    addXP(20, 'Daily Goal Bonus');
+  }
+}
+
+function updateHeader() {
+  document.getElementById('xpDisplay').textContent = S.xp;
+  document.getElementById('streakDisplay').textContent = S.streak;
+  const pct = Math.min(1, S.dailyProgress / S.dailyGoal);
+  const circumference = 2 * Math.PI * 16;
+  document.getElementById('ringFg').style.strokeDashoffset = circumference * (1 - pct);
+  document.getElementById('ringText').textContent = `${S.dailyProgress}/${S.dailyGoal}`;
+}
+
+function showAchievement(icon, title, desc) {
+  const el = document.createElement('div');
+  el.className = 'achievement-popup';
+  el.innerHTML = `<div class="ach-icon">${icon}</div><div class="ach-title">${title}</div><div class="ach-desc">${desc}</div>`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// ============================================================
+//  HOME: LEARNING PATH
+// ============================================================
+function renderStyleBar() {
+  const bar = document.getElementById('styleBar');
+  if (S.profiles.length === 0) {
+    bar.innerHTML = '<div style="font-size:13px;color:var(--text3);padding:8px 0;">先到「语料实验室」创建风格档案 →</div>';
+    return;
+  }
+  bar.innerHTML = S.profiles.map(p => `
+    <button class="style-chip${S.activeStyle === p.id ? ' active' : ''}" onclick="setActiveStyle(${p.id})">
+      <span class="dot" style="background:${p.color};"></span>${escHtml(p.name)}
+    </button>
+  `).join('') + `
+    <button class="style-chip" onclick="switchTab('lab')">
+      <span class="add-style">+ 添加风格</span>
+    </button>`;
+}
+
+function setActiveStyle(id) {
+  S.activeStyle = id;
+  saveData();
+  renderStyleBar();
+}
+
+function renderPath() {
+  const container = document.getElementById('pathContainer');
+  let html = '';
+  [1, 2, 3].forEach(part => {
+    const topics = TOPICS.filter(t => t.part === part);
+    html += `<div class="path-section-title">Part ${part} ${part === 1 ? '· 个人信息' : part === 2 ? '· 话题卡' : '· 深度讨论'}</div>`;
+    topics.forEach((topic, i) => {
+      const progress = S.topicProgress[topic.id] || { stars: 0, attempts: 0 };
+      const isLocked = part > 1 && Object.values(S.topicProgress).filter(t => t.stars > 0).length < 3 && part === 2 && i > 0;
+      const nodeClass = progress.stars > 0 ? 'completed' : 'available';
+      const lockClass = isLocked ? ' locked' : '';
+      const starsHtml = [1,2,3].map(s => `<span class="star ${s <= progress.stars ? 'filled' : 'empty'}">⭐</span>`).join('');
+      html += `
+        <div class="path-node">
+          <button class="node-btn ${nodeClass}${lockClass}" style="background:${topic.color};"
+            ${isLocked ? 'disabled' : `onclick="startSession('${topic.id}')"`}>
+            <span class="node-icon">${topic.icon}</span>
+            ${progress.stars > 0 ? `<div class="node-stars">${starsHtml}</div>` : ''}
+          </button>
+          <div class="node-label">${topic.name}</div>
+        </div>`;
+    });
+  });
+  container.innerHTML = html;
+}
+
+// ============================================================
+//  SESSION FLOW
+// ============================================================
+function startSession(topicId) {
+  if (!S.activeStyle) {
+    toast('请先选择一个风格档案');
+    switchTab('lab');
+    return;
+  }
+  const profile = S.profiles.find(p => p.id === S.activeStyle);
+  if (!profile) return;
+  const dna = buildProfileDNA(S.activeStyle);
+  const base = getBaseAnswer(topicId);
+  const answer = applyStyleTransform(base, dna);
+
+  // Split into sentences for speaking practice
+  const sentences = answer.match(/[^.!?]+[.!?]+/g) || [answer];
+  // Pick 3-4 sentences for speaking practice
+  const speakSentences = sentences.slice(0, Math.min(4, sentences.length));
+
+  S.session = {
+    topicId,
+    topic: TOPICS.find(t => t.id === topicId),
+    profile,
+    dna,
+    answer,
+    sentences: speakSentences,
+    step: 0,
+    hearts: 3,
+    collectedExprs: new Set(),
+    speakScores: [],
+  };
+
+  const steps = ['read', 'listen', 'speak', 'collect', 'complete'];
+  S.session.steps = steps;
+
+  document.getElementById('sessionOverlay').classList.add('show');
+  renderHearts();
+  renderSessionStep();
+}
+
+function renderHearts() {
+  const el = document.getElementById('sessionHearts');
+  el.innerHTML = [0,1,2].map(i => `<span class="heart ${i >= S.session.hearts ? 'lost' : ''}">❤️</span>`).join('');
+}
+
+function renderSessionStep() {
+  const step = S.session.steps[S.session.step];
+  const progress = ((S.session.step) / S.session.steps.length) * 100;
+  document.getElementById('sessionProgress').style.width = progress + '%';
+  const body = document.getElementById('sessionBody');
+  const bottom = document.getElementById('sessionBottom');
+  const topic = S.session.topic;
+
+  if (step === 'read') {
+    body.innerHTML = `
+      <div class="session-step-label">📖 阅读 · ${topic.name}</div>
+      <div class="session-question" style="font-size:18px;">读一遍这篇「${escHtml(S.session.profile.name)}」风格的答案<br><span style="font-size:13px;color:var(--text3);font-weight:400;">黄色高亮 = 可收藏的重点表达</span></div>
+      <div class="answer-box" id="readBox">${highlightExprs(S.session.answer, S.session.dna)}</div>
+    `;
+    bottom.style.display = 'flex';
+    document.getElementById('sessionFeedback').textContent = '';
+    document.getElementById('sessionNextBtn').textContent = '听一遍 ➡';
+    // Attach expr click handlers
+    document.querySelectorAll('#readBox .hl').forEach(el => {
+      el.addEventListener('click', function() {
+        const expr = this.getAttribute('data-expr');
+        if (S.session.collectedExprs.has(expr)) {
+          S.session.collectedExprs.delete(expr);
+          this.classList.remove('collected');
+        } else {
+          S.session.collectedExprs.add(expr);
+          this.classList.add('collected');
+        }
+      });
+    });
+  }
+
+  else if (step === 'listen') {
+    body.innerHTML = `
+      <div class="session-step-label">🎧 听力训练</div>
+      <div class="session-question">仔细听，注意语调和节奏</div>
+      <div class="listen-card">
+        <button class="listen-btn" id="listenBtn" onclick="playListen()">🔊</button>
+        <div style="font-size:13px;color:var(--text3);margin-top:8px;">点击播放</div>
+        <div class="speed-row">
+          <button class="speed-btn ${S.session.listenSpeed === 0.6 ? 'active' : ''}" onclick="setListenSpeed(0.6)">🐢 慢速</button>
+          <button class="speed-btn ${!S.session.listenSpeed || S.session.listenSpeed === 0.8 ? 'active' : ''}" onclick="setListenSpeed(0.8)">正常</button>
+          <button class="speed-btn ${S.session.listenSpeed === 1.0 ? 'active' : ''}" onclick="setListenSpeed(1.0)">⚡ 快速</button>
+        </div>
+      </div>
+      <div class="answer-box" style="font-size:15px;opacity:0.7;" id="listenText">${S.session.answer}</div>
+    `;
+    bottom.style.display = 'flex';
+    document.getElementById('sessionFeedback').textContent = '听完后点击继续';
+    document.getElementById('sessionNextBtn').textContent = '开始跟读 ➡';
+    S.session.listenSpeed = S.session.listenSpeed || 0.8;
+  }
+
+  else if (step === 'speak') {
+    const sentIdx = S.session.speakIdx || 0;
+    const sentence = S.session.sentences[sentIdx];
+    body.innerHTML = `
+      <div class="session-step-label">🎤 跟读练习 (${sentIdx + 1}/${S.session.sentences.length})</div>
+      <div class="session-question">大声朗读这句话</div>
+      <div class="speak-card">
+        <div class="speak-sentence">${escHtml(sentence.trim())}</div>
+        <button class="speak-btn" id="speakBtn" onclick="toggleSpeak()">🎤</button>
+        <div class="speak-hint">点击麦克风开始录音</div>
+        <div class="speak-result" id="speakResult"></div>
+      </div>
+    `;
+    bottom.style.display = 'flex';
+    if (sentIdx < S.session.sentences.length - 1) {
+      document.getElementById('sessionNextBtn').textContent = '下一句 ➡';
+      document.getElementById('sessionFeedback').textContent = `第 ${sentIdx + 1}/${S.session.sentences.length} 句`;
+    } else {
+      document.getElementById('sessionNextBtn').textContent = '查看成绩 ➡';
+      document.getElementById('sessionFeedback').textContent = `最后一句！`;
+    }
+  }
+
+  else if (step === 'collect') {
+    const collected = Array.from(S.session.collectedExprs);
+    body.innerHTML = `
+      <div class="session-step-label">⭐ 收藏表达</div>
+      <div class="session-question">点击你想要记住的表达</div>
+      <div class="collect-card">
+        <div class="collect-hint">已收藏 ${collected.length} 个表达</div>
+        <div class="collect-grid" id="collectGrid">
+          ${getCollectableExprs(S.session.answer, S.session.dna).map(expr => `
+            <div class="collect-chip${collected.includes(expr) ? ' collected' : ''}" onclick="toggleCollect('${escAttr(expr)}')">
+              ${escHtml(expr)}${collected.includes(expr) ? ' <span class="check">✓</span>' : ''}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    bottom.style.display = 'flex';
+    document.getElementById('sessionFeedback').textContent = `${collected.length} 个表达已选中`;
+    document.getElementById('sessionNextBtn').textContent = '完成练习 ✅';
+  }
+
+  else if (step === 'complete') {
+    // Save collected expressions
+    S.session.collectedExprs.forEach(expr => {
+      if (!S.expressions.some(e => e.text.toLowerCase() === expr.toLowerCase())) {
+        S.expressions.push({ id: Date.now() + Math.random(), text: expr, profileId: S.session.profile.id, savedAt: new Date().toISOString() });
+      }
+    });
+
+    // Calculate score
+    const speakScores = S.session.speakScores;
+    const avgScore = speakScores.length ? Math.round(speakScores.reduce((a,b)=>a+b,0) / speakScores.length) : 0;
+    const stars = avgScore >= 80 ? 3 : avgScore >= 50 ? 2 : 1;
+
+    // Update topic progress
+    const prev = S.topicProgress[S.session.topicId] || { stars: 0, attempts: 0, bestScore: 0 };
+    S.topicProgress[S.session.topicId] = {
+      stars: Math.max(prev.stars, stars),
+      attempts: prev.attempts + 1,
+      bestScore: Math.max(prev.bestScore, avgScore),
+      lastPracticed: new Date().toISOString(),
+    };
+
+    // Gamification
+    const xpEarned = 10 + stars * 5 + S.session.collectedExprs.size * 2;
+    addXP(xpEarned, '练习完成');
+    updateStreak();
+    updateDailyGoal();
+
+    if (S.streak === 3) showAchievement('🔥', '连续3天！', '保持势头！');
+    if (S.streak === 7) showAchievement('🔥', '一周连续打卡！', '你太厉害了！');
+    if (Object.keys(S.topicProgress).filter(k => S.topicProgress[k].stars >= 3).length >= 5) {
+      showAchievement('🏆', '五星达人', '5个话题获得满星！');
+    }
+
+    saveData();
+
+    body.innerHTML = `
+      <div class="complete-screen">
+        <div class="complete-icon">${stars === 3 ? '🏆' : stars === 2 ? '🎉' : '✅'}</div>
+        <div class="complete-title">${stars === 3 ? '完美！' : stars === 2 ? '干得漂亮！' : '完成！'}</div>
+        <div class="complete-sub">${escHtml(S.session.topic.name)} · ${escHtml(S.session.profile.name)}</div>
+        <div class="complete-stats">
+          <div class="complete-stat">
+            <div class="val">${'⭐'.repeat(stars)}</div>
+            <div class="lbl">星级</div>
+          </div>
+          <div class="complete-stat">
+            <div class="val">${avgScore}%</div>
+            <div class="lbl">发音匹配</div>
+          </div>
+          <div class="complete-stat">
+            <div class="val">+${xpEarned}</div>
+            <div class="lbl">XP</div>
+          </div>
+          <div class="complete-stat">
+            <div class="val">${S.session.collectedExprs.size}</div>
+            <div class="lbl">收藏表达</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-gray" onclick="exitSession()">返回路径</button>
+          <button class="btn btn-green" onclick="retrySession()">再练一次 🔄</button>
+        </div>
+      </div>
+    `;
+    bottom.style.display = 'none';
+    renderPath();
+    renderBank();
+  }
+}
+
+function nextStep() {
+  const step = S.session.steps[S.session.step];
+
+  if (step === 'speak') {
+    // Move to next sentence or next step
+    S.session.speakIdx = (S.session.speakIdx || 0) + 1;
+    if (S.session.speakIdx < S.session.sentences.length) {
+      renderSessionStep();
+      return;
+    }
+  }
+
+  S.session.step++;
+  S.session.speakIdx = 0;
+  if (S.session.step < S.session.steps.length) {
+    renderSessionStep();
+  }
+}
+
+function exitSession() {
+  document.getElementById('sessionOverlay').classList.remove('show');
+  S.session = null;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+function retrySession() {
+  const topicId = S.session.topicId;
+  exitSession();
+  setTimeout(() => startSession(topicId), 100);
+}
+
+// Listen step
+function playListen() {
+  const btn = document.getElementById('listenBtn');
+  if (!window.speechSynthesis) { toast('浏览器不支持语音'); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(S.session.answer);
+  u.lang = 'en-US';
+  u.rate = S.session.listenSpeed || 0.8;
+  btn.classList.add('playing');
+  u.onend = () => btn.classList.remove('playing');
+  window.speechSynthesis.speak(u);
+}
+
+function setListenSpeed(speed) {
+  S.session.listenSpeed = speed;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Speak step
+let recognition = null;
+function toggleSpeak() {
+  const btn = document.getElementById('speakBtn');
+  const result = document.getElementById('speakResult');
+
+  if (btn.classList.contains('recording')) {
+    btn.classList.remove('recording');
+    if (recognition) recognition.stop();
+    return;
+  }
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    // Fallback: simulate scoring
+    const score = Math.floor(Math.random() * 30) + 60;
+    showSpeakResult(score);
+    return;
+  }
+
+  btn.classList.add('recording');
+  recognition = new SR();
+  recognition.lang = 'en-US';
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  let transcript = '';
+  recognition.onresult = (e) => {
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+  };
+  recognition.onerror = () => {
+    btn.classList.remove('recording');
+    const score = Math.floor(Math.random() * 30) + 60;
+    showSpeakResult(score);
+  };
+  recognition.onend = () => {
+    btn.classList.remove('recording');
+    const target = S.session.sentences[S.session.speakIdx || 0];
+    const score = calcSpeakScore(transcript, target);
+    showSpeakResult(score);
+  };
+  recognition.start();
+}
+
+function showSpeakResult(score) {
+  const result = document.getElementById('speakResult');
+  S.session.speakScores = S.session.speakScores || [];
+  S.session.speakScores.push(score);
+
+  let cls, msg;
+  if (score >= 75) { cls = 'good'; msg = `🎉 太棒了！匹配度 ${score}%`; }
+  else if (score >= 45) { cls = 'ok'; msg = `💪 不错！匹配度 ${score}%，继续加油`; }
+  else { cls = 'bad'; msg = `📖 匹配度 ${score}%，多听几遍再试试`; S.session.hearts--; renderHearts(); }
+
+  result.className = 'speak-result show ' + cls;
+  result.textContent = msg;
+
+  if (S.session.hearts <= 0) {
+    setTimeout(() => {
+      S.session.step = S.session.steps.indexOf('collect');
+      renderSessionStep();
+    }, 1500);
+  }
+}
+
+function calcSpeakScore(spoken, target) {
+  if (!spoken) return Math.floor(Math.random() * 20) + 20;
+  const sw = new Set(spoken.toLowerCase().split(/\s+/).filter(w => w.length > 2));
+  const tw = new Set(target.toLowerCase().split(/\s+/).filter(w => w.length > 2));
+  if (tw.size === 0) return 50;
+  let overlap = 0;
+  sw.forEach(w => { if (tw.has(w)) overlap++; });
+  return Math.min(100, Math.round((overlap / tw.size) * 100));
+}
+
+// Collect step
+function toggleCollect(expr) {
+  if (S.session.collectedExprs.has(expr)) {
+    S.session.collectedExprs.delete(expr);
+  } else {
+    S.session.collectedExprs.add(expr);
+  }
+  renderSessionStep();
+}
+
+// ============================================================
+//  HIGHLIGHTING & EXPRESSIONS
+// ============================================================
+function highlightExprs(text, dna) {
+  let result = text;
+  const toHl = [];
+  if (dna) {
+    if (dna.topPhrases) dna.topPhrases.slice(0, 5).forEach(p => toHl.push(p.phrase));
+    if (dna.topExpr) dna.topExpr.slice(0, 3).forEach(p => toHl.push(p.phrase));
+    if (dna.discourseMarkers) dna.discourseMarkers.forEach(m => toHl.push(m));
+  }
+  const unique = [...new Set(toHl)].sort((a, b) => b.length - a.length);
+  unique.forEach(phrase => {
+    if (phrase.length < 3) return;
+    const regex = new RegExp('\\b' + phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+    result = result.replace(regex, m => `<span class="hl" data-expr="${escAttr(m)}">${m}</span>`);
+  });
+  return result;
+}
+
+function getCollectableExprs(text, dna) {
+  const exprs = new Set();
+  if (dna) {
+    if (dna.topPhrases) dna.topPhrases.slice(0, 6).forEach(p => exprs.add(p.phrase));
+    if (dna.topExpr) dna.topExpr.slice(0, 4).forEach(p => exprs.add(p.phrase));
+    if (dna.discourseMarkers) dna.discourseMarkers.slice(0, 5).forEach(m => exprs.add(m));
+    if (dna.sigExpr) dna.sigExpr.slice(0, 3).forEach(e => exprs.add(e));
+  }
+  return Array.from(exprs);
+}
+
+// ============================================================
+//  LAB VIEW
+// ============================================================
+function submitCorpus() {
+  const text = document.getElementById('corpusInput').value.trim();
+  if (!text) { toast('请粘贴语料内容'); return; }
+  const source = document.getElementById('corpusSource').value.trim();
+  const profileId = document.getElementById('corpusProfile').value ? parseInt(document.getElementById('corpusProfile').value) : null;
+  const analysis = analyzeCorpus(text);
+  S.corpus.unshift({ id: Date.now(), text, source: source || '未标注', profileId, analysis, createdAt: new Date().toISOString() });
+  document.getElementById('corpusInput').value = '';
+  document.getElementById('corpusSource').value = '';
+  saveData();
+  renderLab();
+  showAnalysis(analysis);
+  toast(`✅ 分析完成！${analysis.wordCount}词 · ${analysis.primaryTone?.tone || 'neutral'}风格`);
+}
+
+function showAnalysis(a) {
+  const sec = document.getElementById('analysisSection');
+  sec.style.display = 'block';
+  document.getElementById('analysisContent').innerHTML = `
+    <div class="analysis-box">
+      <div class="analysis-row">
+        <span class="analysis-pill green">📝 ${a.wordCount} 词</span>
+        <span class="analysis-pill blue">📏 均句长 ${a.avgSentLen}</span>
+        <span class="analysis-pill gold">🤵 正式度 ${a.formality}/10</span>
+        <span class="analysis-pill purple">🎭 ${a.primaryTone?.tone || 'neutral'}</span>
+        <span class="analysis-pill">❗ 感叹 ${a.exclamationCount}</span>
+        <span class="analysis-pill">❓ 问句 ${a.questionCount}</span>
+      </div>
+      ${a.topBigrams.length > 0 ? `<div style="margin-top:8px;font-size:11px;color:var(--text3);">高频短语:</div><div class="analysis-row">${a.topBigrams.slice(0,6).map(p=>`<span class="analysis-pill gold">${escHtml(p.phrase)} ×${p.count}</span>`).join('')}</div>` : ''}
+      ${a.discourseMarkers.length > 0 ? `<div style="margin-top:8px;font-size:11px;color:var(--text3);">话语标记:</div><div class="analysis-row">${a.discourseMarkers.map(m=>`<span class="analysis-pill blue">${escHtml(m)}</span>`).join('')}</div>` : ''}
+    </div>
+  `;
+}
+
+function deleteCorpus(id) {
+  S.corpus = S.corpus.filter(c => c.id !== id);
+  saveData(); renderLab();
+}
+
+function renderLab() {
+  // Corpus list
+  const list = document.getElementById('corpusList');
+  document.getElementById('corpusCountLabel').textContent = `(${S.corpus.length})`;
+  if (S.corpus.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--text3);text-align:center;padding:16px;">还没有语料</div>';
+  } else {
+    list.innerHTML = S.corpus.map(c => {
+      const p = S.profiles.find(pr => pr.id === c.profileId);
+      return `<div class="corpus-item">
+        <button class="corpus-del" onclick="deleteCorpus(${c.id})">×</button>
+        <div class="corpus-preview">${escHtml(c.text.substring(0, 100))}${c.text.length > 100 ? '…' : ''}</div>
+        <div class="corpus-meta">
+          <span>📺 ${escHtml(c.source)} · ${fmtDate(c.createdAt)}</span>
+          ${p ? `<span class="corpus-profile-badge" style="background:${p.color}20;color:${p.color};">${escHtml(p.name)}</span>` : '<span class="corpus-profile-badge" style="background:var(--bg2);color:var(--text3);border:1px solid var(--border);">未分配</span>'}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Profile list
+  const pl = document.getElementById('profileList');
+  if (S.profiles.length === 0) {
+    pl.innerHTML = '<div style="font-size:13px;color:var(--text3);text-align:center;padding:12px;">还没有风格档案</div>';
+  } else {
+    pl.innerHTML = S.profiles.map(p => {
+      const cnt = S.corpus.filter(c => c.profileId === p.id).length;
+      const dna = buildProfileDNA(p.id);
+      return `<div class="profile-item">
+        <div>
+          <div class="profile-name"><span class="pdot" style="background:${p.color};"></span>${escHtml(p.name)}</div>
+          <div class="profile-stats">${cnt}条语料${dna ? ` · 均句长${dna.avgSentLen} · ${dna.primaryTone?.tone || 'neutral'}` : ''}</div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn btn-gray btn-xs" onclick="viewProfile(${p.id})">🔍</button>
+          <button class="btn btn-gray btn-xs" onclick="deleteProfile(${p.id})">🗑</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Profile select
+  const sel = document.getElementById('corpusProfile');
+  sel.innerHTML = '<option value="">→ 分配到风格档案</option>' + S.profiles.map(p => `<option value="${p.id}">${escHtml(p.name)}</option>`).join('');
+}
+
+function showCreateProfile() {
+  const colors = ['#58cc02','#1cb0f6','#ce82ff','#ff9600','#ff4b4b','#ffc800','#0891b2','#db2777'];
+  const color = colors[S.profiles.length % colors.length];
+  showModal(`
+    <h3>创建风格档案</h3>
+    <input class="lab-input" id="newProfileName" placeholder="风格名称 (e.g. 摩登家庭风)" onkeydown="if(event.key==='Enter')createProfile('${color}')">
+    <p style="font-size:12px;color:var(--text3);">给这个风格起个名字，然后把同类语料分配过来</p>
+    <div class="modal-actions">
+      <button class="btn btn-gray btn-sm" onclick="closeModal()">取消</button>
+      <button class="btn btn-green btn-sm" onclick="createProfile('${color}')">创建</button>
+    </div>
+  `);
+  setTimeout(() => document.getElementById('newProfileName')?.focus(), 100);
+}
+
+function createProfile(color) {
+  const name = document.getElementById('newProfileName').value.trim();
+  if (!name) { toast('请输入名称'); return; }
+  const p = { id: Date.now(), name, color, createdAt: new Date().toISOString() };
+  S.profiles.push(p);
+  if (!S.activeStyle) S.activeStyle = p.id;
+  closeModal();
+  saveData();
+  renderLab();
+  renderStyleBar();
+  toast(`✨ 风格档案「${name}」已创建`);
+}
+
+function deleteProfile(id) {
+  const p = S.profiles.find(pr => pr.id === id);
+  if (!confirm(`删除「${p.name}」？语料不会被删除。`)) return;
+  S.profiles = S.profiles.filter(pr => pr.id !== id);
+  S.corpus.forEach(c => { if (c.profileId === id) c.profileId = null; });
+  if (S.activeStyle === id) S.activeStyle = S.profiles[0]?.id || null;
+  saveData();
+  renderLab();
+  renderStyleBar();
+}
+
+function viewProfile(id) {
+  const p = S.profiles.find(pr => pr.id === id);
+  const dna = buildProfileDNA(id);
+  if (!dna) { toast('该档案下没有已分析的语料'); return; }
+  showModal(`
+    <h3>📊 ${escHtml(p.name)} 风格分析</h3>
+    <div class="analysis-box">
+      <div class="analysis-row">
+        <span class="analysis-pill green">📄 ${dna.corpusCount}条语料</span>
+        <span class="analysis-pill blue">📝 ${dna.totalWords}词</span>
+        <span class="analysis-pill gold">📏 均句长${dna.avgSentLen}</span>
+        <span class="analysis-pill purple">🤵 正式度${dna.formality}/10</span>
+      </div>
+      <div class="analysis-row">
+        <span class="analysis-pill">🎭 ${dna.primaryTone?.tone || 'neutral'}</span>
+        <span class="analysis-pill">❗ ${dna.exclamationRate}%</span>
+        <span class="analysis-pill">缩略词${dna.contractionRate}%</span>
+      </div>
+      ${dna.topPhrases.length ? `<div style="margin-top:8px;font-size:11px;color:var(--text3);">高频短语:</div><div class="analysis-row">${dna.topPhrases.slice(0,8).map(p=>`<span class="analysis-pill gold">${escHtml(p.phrase)}</span>`).join('')}</div>` : ''}
+      ${dna.discourseMarkers.length ? `<div style="margin-top:8px;font-size:11px;color:var(--text3);">话语标记:</div><div class="analysis-row">${dna.discourseMarkers.map(m=>`<span class="analysis-pill blue">${escHtml(m)}</span>`).join('')}</div>` : ''}
+      ${dna.sigExpr.length ? `<div style="margin-top:8px;font-size:11px;color:var(--text3);">签名表达:</div><div class="analysis-row">${dna.sigExpr.slice(0,6).map(e=>`<span class="analysis-pill purple">${escHtml(e)}</span>`).join('')}</div>` : ''}
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-green btn-sm" onclick="closeModal()">关闭</button>
+    </div>
+  `);
+}
+
+// ============================================================
+//  BANK VIEW
+// ============================================================
+function renderBank() {
+  const content = document.getElementById('bankContent');
+  const actions = document.getElementById('bankActions');
+  if (S.expressions.length === 0) {
+    content.innerHTML = `<div class="bank-empty"><div class="emoji">📭</div><p>完成练习后收藏的表达会出现在这里</p></div>`;
+    actions.style.display = 'none';
+    return;
+  }
+  actions.style.display = 'block';
+  content.innerHTML = S.expressions.map(e => {
+    const p = S.profiles.find(pr => pr.id === e.profileId);
+    return `<div class="expr-card">
+      <button class="expr-del" onclick="removeExpr('${e.id}')">×</button>
+      <div class="expr-text">${escHtml(e.text)}</div>
+      <div class="expr-meta">
+        ${p ? `<span class="expr-profile" style="background:${p.color}20;color:${p.color};">${escHtml(p.name)}</span>` : ''}
+        <span>📅 ${fmtDate(e.savedAt)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function removeExpr(id) {
+  S.expressions = S.expressions.filter(e => String(e.id) !== String(id));
+  saveData(); renderBank();
+}
+
+function exportExpressions() {
+  const txt = S.expressions.map((e, i) => `${i+1}. ${e.text}`).join('\n');
+  navigator.clipboard.writeText(txt).then(() => toast('📋 已复制到剪贴板'));
+}
+
+// Review mode
+function startReview() {
+  if (S.expressions.length === 0) return;
+  const shuffled = [...S.expressions].sort(() => Math.random() - 0.5);
+  let idx = 0;
+
+  function showCard() {
+    if (idx >= shuffled.length) {
+      document.getElementById('bankContent').innerHTML = `<div class="bank-empty"><div class="emoji">🎉</div><p>复习完成！</p></div>`;
+      addXP(5, '复习完成');
+      renderBank();
+      return;
+    }
+    const e = shuffled[idx];
+    const p = S.profiles.find(pr => pr.id === e.profileId);
+    document.getElementById('bankContent').innerHTML = `
+      <div class="review-card">
+        <div style="font-size:12px;color:var(--text3);margin-bottom:8px;">${idx+1} / ${shuffled.length}</div>
+        <div class="review-expr">${escHtml(e.text)}</div>
+        <div class="review-meta">${p ? escHtml(p.name) : ''}</div>
+        <button class="btn btn-blue" onclick="playReviewAudio('${escAttr(e.text)}')">🔊 听</button>
+        <div class="review-actions" style="margin-top:16px;">
+          <button class="btn btn-gray btn-sm" onclick="idx++;showCard()">不太熟 👎</button>
+          <button class="btn btn-green btn-sm" onclick="idx++;showCard()">掌握了 👍</button>
+        </div>
+      </div>
+    `;
+  }
+  showCard();
+}
+
+function playReviewAudio(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.8;
+  window.speechSynthesis.speak(u);
+}
+
+// ============================================================
+//  TAB SWITCHING
+// ============================================================
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  event?.target?.closest?.('.tab')?.classList.add('active');
+  document.getElementById(name + 'View').classList.add('active');
+  if (name === 'home') { renderStyleBar(); renderPath(); }
+  if (name === 'lab') renderLab();
+  if (name === 'bank') renderBank();
+}
+
+// ============================================================
+//  MODAL & TOAST
+// ============================================================
+function showModal(html) {
+  document.getElementById('modalContainer').innerHTML = `<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal-box" onclick="event.stopPropagation()">${html}</div></div>`;
+}
+function closeModal() { document.getElementById('modalContainer').innerHTML = ''; }
+function toast(msg) {
+  const el = document.createElement('div');
+  el.className = 'toast'; el.textContent = msg;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
+
+// ============================================================
+//  UTILS
+// ============================================================
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function escAttr(s) { return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+function fmtDate(iso) { const d = new Date(iso); return `${d.getMonth()+1}/${d.getDate()}`; }
+
+// ============================================================
+//  PERSISTENCE
+// ============================================================
+function saveData() {
+  localStorage.setItem('speaklab_v3', JSON.stringify({
+    xp: S.xp, streak: S.streak, lastPracticeDate: S.lastPracticeDate,
+    dailyGoal: S.dailyGoal, dailyProgress: S.dailyProgress, dailyDate: S.dailyDate,
+    corpus: S.corpus, profiles: S.profiles, expressions: S.expressions,
+    activeStyle: S.activeStyle, topicProgress: S.topicProgress,
+  }));
+}
+function loadData() {
+  const raw = localStorage.getItem('speaklab_v3');
+  if (raw) {
+    try {
+      const d = JSON.parse(raw);
+      Object.assign(S, d);
+    } catch(e) {}
+  }
+  // Daily reset
+  const today = new Date().toDateString();
+  if (S.dailyDate !== today) { S.dailyDate = today; S.dailyProgress = 0; }
+}
+
+// ============================================================
+//  INIT & SEED
+// ============================================================
+loadData();
+
+if (S.profiles.length === 0 && !localStorage.getItem('speaklab_v3_seeded')) {
+  const now = new Date().toISOString();
+  const mfText = `Gloria: "In my country, we don't say goodbye, we say 'see you when I see you.'"\nJay: "That's the same thing."\nGloria: "No, it's different. It's more… hopeful."\nPhil: "I'm not a 'cool dad,' I'm a 'regular dad' with cool moments. When life gives you lemonade, make lemons. Life will be all like, 'Whaaat?'"\nClaire: "I have three kids. I have no idea what I'm doing. But somehow, they're turning out okay. That's parenting in a nutshell."\nGloria: "Family is family. You fight, you make up, you eat together."`;
+  const kText = `Kim: "I'm literally obsessed with this. It's giving everything. Like, the vibes are immaculate."\nKhloe: "Bible. This is the energy we need right now."\nKris: "You're doing amazing, sweetie. Never forget that."\nKim: "I didn't come this far to only come this far. At the end of the day, you have to bet on yourself."\nKourtney: "Honestly? I'm just here for the snacks. But also, like, the personal growth or whatever."`;
+  const jText = `"My dad has never once said 'I love you.' But he once drove two hours to bring me a rice cooker because he heard I was 'eating out too much.' That's Asian love right there."\n"Asian parents don't say 'I'm proud of you.' They say 'your cousin got into Harvard' — and that's supposed to motivate you somehow."\n"When I told my mom I wanted to do comedy, she said 'that's not a job, that's a cry for help.'"\n"Growing up, I was embarrassed about everything — my lunch, my parents' accent, the fact that we reused Ziploc bags. Now I realize all that stuff made me who I am."`;
+
+  S.profiles = [
+    { id: 1001, name: '摩登家庭风', color: '#58cc02', createdAt: now },
+    { id: 1002, name: '卡戴珊风', color: '#db2777', createdAt: now },
+    { id: 1003, name: 'Jimmy O Yang', color: '#ff9600', createdAt: now },
+  ];
+  S.corpus = [
+    { id: 1, text: mfText, source: 'Modern Family S03E05', profileId: 1001, analysis: analyzeCorpus(mfText), createdAt: now },
+    { id: 2, text: kText, source: 'Keeping Up with Kardashians', profileId: 1002, analysis: analyzeCorpus(kText), createdAt: now },
+    { id: 3, text: jText, source: 'Jimmy O Yang Stand-up', profileId: 1003, analysis: analyzeCorpus(jText), createdAt: now },
+  ];
+  S.activeStyle = 1001;
+  S.xp = 0; S.streak = 0;
+  saveData();
+  localStorage.setItem('speaklab_v3_seeded', '1');
+}
+
+updateHeader();
+renderStyleBar();
+renderPath();
+renderLab();
+renderBank();
+
+console.log('🎯 SpeakLab v3 — Duolingo-inspired IELTS Speaking Workbench');
+console.log('   XP:', S.xp, '| Streak:', S.streak, '| Daily:', S.dailyProgress + '/' + S.dailyGoal);
+console.log('   Profiles:', S.profiles.map(p=>p.name).join(', '));
+console.log('   Topics:', Object.keys(S.topicProgress).length, 'practiced');
+</script>
+
+</body>
+</html>
