@@ -509,6 +509,372 @@ const TOPICS = [
 ];
 
 // ============================================================
+//  TOPIC CONTENT — 每个话题的知识锚点
+// ============================================================
+const TOPIC_CONTENT = {
+  hometown: {
+    domain:'place & belonging',
+    points: [
+      {fragment:"I grew up in a mid-sized city — not too big, not too small, just the right amount of everything", vocab:['mid-sized','grew up']},
+      {fragment:"what I love most is the food there, nothing beats the local dishes I grew up eating", vocab:['local','dishes','grew up eating']},
+      {fragment:"it's the kind of place where you can walk down the street and bump into three people you know", vocab:['community','familiar','bump into']},
+      {fragment:"the pace of life there is way slower than here, and honestly, I kind of miss that", vocab:['pace of life','miss']},
+      {fragment:"my favorite spot growing up was this little park near my house — spent every summer there", vocab:['favorite spot','growing up']},
+      {fragment:"the people there are incredibly warm and welcoming, which is probably the biggest reason I love it", vocab:['warm','welcoming','community']},
+      {fragment:"even though I don't live there anymore, every time I go back, it just feels right", vocab:['go back','feels right']},
+      {fragment:"it's changed a lot over the years — new buildings, new roads — but the soul of the place is still there", vocab:['changed','new buildings','soul of the place']},
+    ],
+    topicWords:['hometown','grew up','neighborhood','community','local','childhood','familiar','belonging','hometown food','local dishes'],
+  },
+  'work-study': {
+    domain:'career & education',
+    points: [
+      {fragment:"I'm currently working as a marketing specialist, which is honestly way more interesting than I expected", vocab:['currently','marketing','interesting']},
+      {fragment:"I'm a student right now, studying computer science — love the problem-solving part, hate the all-nighters", vocab:['student','computer science','problem-solving']},
+      {fragment:"what I enjoy most about my job is the people I work with — makes even the boring days bearable", vocab:['enjoy','people I work with','bearable']},
+      {fragment:"the first day was honestly a disaster — I showed up late and spilled coffee on my shirt, classic me", vocab:['first day','disaster','classic']},
+      {fragment:"I've been thinking about switching paths actually — maybe something more creative", vocab:['switching','paths','creative']},
+      {fragment:"in the long run, I'd love to start my own business, but for now I'm just learning the ropes", vocab:['long run','start my own business','learning the ropes']},
+      {fragment:"honestly, the best part is that every day is different — you never know what's gonna happen", vocab:['every day','different','never know']},
+    ],
+    topicWords:['job','career','study','student','working','field','passion','switch','enjoy'],
+  },
+  hobbies: {
+    domain:'leisure & interests',
+    points: [
+      {fragment:"in my free time, I love cooking — there's something therapeutic about chopping vegetables after a long day", vocab:['free time','cooking','therapeutic']},
+      {fragment:"I picked up photography a few years ago and now I can't put the camera down", vocab:['picked up','photography','can't put down']},
+      {fragment:"I used to play the guitar but stopped for a while — been meaning to pick it back up honestly", vocab:['used to','guitar','pick it back up']},
+      {fragment:"I'm definitely more of an indoors person — give me a good book and a cup of tea over a crowded bar any day", vocab:['indoors','book','crowded']},
+      {fragment:"hobbies are so important because they give you something that's just for you, not for work or anyone else", vocab:['important','just for you']},
+      {fragment:"I actually think the best hobbies are the ones where you completely lose track of time", vocab:['best','lose track of time']},
+    ],
+    topicWords:['hobby','free time','passion','relax','creative','enjoy','weekends'],
+  },
+  food: {
+    domain:'food & cooking',
+    points: [
+      {fragment:"I'm a huge food person — I genuinely get excited about trying new restaurants", vocab:['food person','excited','restaurants']},
+      {fragment:"I cook at home probably four or five times a week — it's cheaper and honestly, I enjoy the process", vocab:['cook at home','cheaper','enjoy']},
+      {fragment:"my diet has changed massively since I was a kid — used to live on junk food, now I actually eat vegetables", vocab:['diet','changed','junk food','vegetables']},
+      {fragment:"if I had to recommend one dish from my country, it would be hotpot — it's a whole experience", vocab:['recommend','dish','hotpot','experience']},
+      {fragment:"eating at home is great, but sometimes you just want someone else to do the dishes, you know?", vocab:['eating at home','dishes']},
+      {fragment:"food is such a big part of our culture — every festival has its own special dish, and that's kind of beautiful", vocab:['culture','festival','special dish']},
+    ],
+    topicWords:['food','cooking','cuisine','restaurant','diet','dish','flavor','traditional'],
+  },
+  weather: {
+    domain:'weather & seasons',
+    points: [
+      {fragment:"I'm definitely a sunny day person — there's just something about waking up to blue skies that sets the whole mood", vocab:['sunny','blue skies','mood']},
+      {fragment:"I actually love rainy days — perfect excuse to stay in, make some tea, and just chill", vocab:['rainy days','stay in','chill']},
+      {fragment:"the weather definitely affects my mood — on gloomy days I just want to stay in bed", vocab:['affects my mood','gloomy']},
+      {fragment:"I've noticed the climate has changed a lot — summers are way hotter than they used to be", vocab:['climate','changed','hotter']},
+      {fragment:"my favorite season is autumn — not too hot, not too cold, and the colors are stunning", vocab:['autumn','not too hot','colors']},
+      {fragment:"when it rains, I usually just put on some music and watch it from the window — very therapeutic", vocab:['rains','music','window','therapeutic']},
+    ],
+    topicWords:['weather','season','sunny','rainy','climate','temperature','mood'],
+  },
+  music: {
+    domain:'music & art',
+    points: [
+      {fragment:"my music taste is honestly all over the place — one minute it's pop, the next it's classical", vocab:['music taste','all over the place','pop','classical']},
+      {fragment:"I used to listen to a lot of rock in high school, but now I'm more into jazz and lo-fi", vocab:['used to','rock','high school','jazz']},
+      {fragment:"I don't play any instruments, but I've always wanted to learn piano — maybe one day", vocab:['instruments','piano','one day']},
+      {fragment:"there's nothing like a live concert — the energy in the room is completely different from listening at home", vocab:['live concert','energy','different']},
+      {fragment:"music is huge in our culture — we have songs for literally every occasion", vocab:['huge','culture','songs','occasion']},
+    ],
+    topicWords:['music','concert','instrument','listen','song','genre','live'],
+  },
+  travel: {
+    domain:'travel & adventure',
+    points: [
+      {fragment:"I love traveling — every trip feels like hitting the reset button on life", vocab:['traveling','reset button']},
+      {fragment:"my most memorable trip was to Japan — the culture, the food, the way everything just works", vocab:['memorable trip','Japan','culture']},
+      {fragment:"I prefer planning my trips loosely — have a rough idea but leave room for spontaneity", vocab:['planning','rough idea','spontaneity']},
+      {fragment:"domestic travel is underrated honestly — there's so much to see in your own country", vocab:['domestic travel','underrated','own country']},
+      {fragment:"the best part of traveling for me is the food — I'll plan entire trips around what I want to eat", vocab:['best part','food','plan']},
+      {fragment:"post-pandemic, I think people value travel so much more — you don't take it for granted anymore", vocab:['post-pandemic','value','take for granted']},
+    ],
+    topicWords:['travel','trip','destination','adventure','culture','explore','abroad','domestic'],
+  },
+  family: {
+    domain:'family & relationships',
+    points: [
+      {fragment:"I'm really close with my family — we have this group chat that blows up like ten times a day", vocab:['close','family','group chat']},
+      {fragment:"my mom is honestly my biggest inspiration — the way she handles everything with such grace", vocab:['mom','inspiration','grace']},
+      {fragment:"we have this tradition of Sunday dinners — no matter how busy everyone is, we make it work", vocab:['tradition','Sunday dinners','make it work']},
+      {fragment:"growing up with siblings was chaotic but honestly, I wouldn't trade it for anything", vocab:['siblings','chaotic','wouldn't trade']},
+      {fragment:"I think family dynamics have changed a lot — we're more open with each other than previous generations", vocab:['family dynamics','changed','open']},
+      {fragment:"my friends are basically family at this point — we've been through so much together", vocab:['friends','family','been through']},
+    ],
+    topicWords:['family','close','parents','siblings','tradition','support','relationship'],
+  },
+  tech: {
+    domain:'technology',
+    points: [
+      {fragment:"I have a love-hate relationship with technology — it makes life easier but also impossible to disconnect", vocab:['love-hate','technology','disconnect']},
+      {fragment:"AI has completely changed how I work — I use it for everything from writing emails to brainstorming ideas", vocab:['AI','changed','work','brainstorming']},
+      {fragment:"I think the biggest downside is how addictive phones have become — I catch myself scrolling for hours", vocab:['downside','addictive','phones','scrolling']},
+      {fragment:"honestly, I couldn't live without my phone anymore, and I'm not sure if that's a good thing", vocab:['couldn\'t live without','good thing']},
+      {fragment:"the pace of technological change is kind of terrifying — what's cutting-edge today is obsolete tomorrow", vocab:['pace','technological change','terrifying']},
+    ],
+    topicWords:['technology','AI','smartphone','internet','digital','innovation','addictive'],
+  },
+  sports: {
+    domain:'sports & fitness',
+    points: [
+      {fragment:"I try to work out three or four times a week — nothing crazy, just enough to stay healthy", vocab:['work out','stay healthy']},
+      {fragment:"I'm a huge basketball fan — I follow the NBA religiously, which drives my friends crazy", vocab:['basketball fan','NBA','religiously']},
+      {fragment:"I used to hate running, but now it's the one time of day when nobody bothers me", vocab:['hate running','nobody bothers me']},
+      {fragment:"team sports teach you so much — communication, trust, how to lose gracefully", vocab:['team sports','communication','trust']},
+      {fragment:"honestly, I think the hardest part of fitness is not the workout — it's getting yourself to start", vocab:['fitness','hardest part','start']},
+    ],
+    topicWords:['sports','fitness','workout','team','health','active','exercise'],
+  },
+  'person-admire': {
+    domain:'role models',
+    points: [
+      {fragment:"the person I admire most is probably my grandmother — she raised five kids basically on her own", vocab:['admire','grandmother','raised']},
+      {fragment:"what makes them special is not their achievements but how they treat people when nobody's watching", vocab:['special','achievements','treat people']},
+      {fragment:"I first met them when I was in college, and from day one, I knew this person was different", vocab:['first met','college','different']},
+      {fragment:"the biggest lesson I've learned from them is that kindness isn't weakness — it takes real strength", vocab:['biggest lesson','kindness','strength']},
+      {fragment:"they're not famous or anything — just an ordinary person who does extraordinary things in small ways", vocab:['not famous','ordinary','extraordinary']},
+    ],
+    topicWords:['admire','role model','inspire','respect','learned from','look up to'],
+  },
+  'memorable-trip': {
+    domain:'travel stories',
+    points: [
+      {fragment:"the most memorable trip I ever took was to Chengdu — not for the pandas, but for the food", vocab:['memorable trip','Chengdu','food']},
+      {fragment:"everything that could go wrong went wrong — missed flights, lost luggage, and somehow it became the best trip ever", vocab:['go wrong','missed flights','best trip']},
+      {fragment:"what made it special wasn't the destination but the people I met along the way", vocab:['special','people I met']},
+      {fragment:"I remember standing on top of this mountain at sunrise and just thinking — this is why I travel", vocab:['mountain','sunrise','this is why I travel']},
+      {fragment:"it completely changed my perspective — came back a different person honestly", vocab:['changed my perspective','different person']},
+    ],
+    topicWords:['trip','journey','destination','memorable','experience','discover'],
+  },
+  'important-event': {
+    domain:'life events',
+    points: [
+      {fragment:"one event that really stands out is my college graduation — seeing my parents' faces made all the late nights worth it", vocab:['stands out','graduation','worth it']},
+      {fragment:"it was totally unexpected — one phone call changed everything, and looking back, I'm glad it happened", vocab:['unexpected','phone call','looking back']},
+      {fragment:"I remember exactly where I was and what I was doing when it happened — some moments just freeze in your memory", vocab:['exactly where','freeze in your memory']},
+      {fragment:"at the time it felt like the end of the world, but now I see it as the beginning of something better", vocab:['end of the world','beginning']},
+      {fragment:"it taught me that you can plan all you want, but life has its own schedule", vocab:['taught me','plan','its own schedule']},
+    ],
+    topicWords:['event','moment','changed my life','look back','taught me'],
+  },
+  'favorite-place': {
+    domain:'places & spaces',
+    points: [
+      {fragment:"my favorite place is this little coffee shop near my apartment — nothing fancy, but it feels like a second home", vocab:['favorite place','coffee shop','second home']},
+      {fragment:"there's this spot by the river where I go when I need to think — it's quiet and nobody bothers you", vocab:['spot by the river','think','quiet']},
+      {fragment:"I discovered it completely by accident — got lost one day and stumbled upon it", vocab:['discovered','by accident','stumbled upon']},
+      {fragment:"it's not a tourist spot or anything — which is exactly why I love it", vocab:['not a tourist spot','exactly why']},
+      {fragment:"the view is incredible, especially at sunset — the whole sky turns pink and orange", vocab:['view','incredible','sunset']},
+    ],
+    topicWords:['favorite place','spot','quiet','comfort','escape','atmosphere'],
+  },
+  'book-movie': {
+    domain:'entertainment',
+    points: [
+      {fragment:"there's this one movie that I've watched probably ten times and I still notice new things every time", vocab:['movie','ten times','notice new things']},
+      {fragment:"it's not the most critically acclaimed film, but it speaks to me in a way that big blockbusters just don't", vocab:['critically acclaimed','speaks to me']},
+      {fragment:"the first time I watched it, I sat there for like ten minutes after the credits just processing", vocab:['first time','credits','processing']},
+      {fragment:"what I love about it is that every character feels real — flawed and complicated, like actual people", vocab:['characters','real','flawed']},
+    ],
+    topicWords:['movie','film','book','story','character','plot','emotional','powerful'],
+  },
+  'skill-learned': {
+    domain:'learning & growth',
+    points: [
+      {fragment:"the most useful skill I've learned is cooking — it saves money, impresses people, and honestly it's kind of meditative", vocab:['useful skill','cooking','saves money','meditative']},
+      {fragment:"I picked it up during the pandemic — had all this free time and figured I should learn something practical", vocab:['picked up','pandemic','free time','practical']},
+      {fragment:"the learning curve was brutal at first — I messed up so many times I almost gave up", vocab:['learning curve','brutal','messed up','gave up']},
+      {fragment:"looking back, the struggle was actually the best part — every failure taught me something", vocab:['looking back','struggle','failure','taught me']},
+    ],
+    topicWords:['skill','learned','practice','struggle','improve','master'],
+  },
+  'childhood-memory': {
+    domain:'growing up',
+    points: [
+      {fragment:"one memory that always makes me smile is when my dad taught me to ride a bike — I crashed into a bush five seconds later", vocab:['memory','dad','ride a bike','crashed']},
+      {fragment:"I grew up in the 2000s, so my childhood was a weird mix of playing outside and discovering the internet", vocab:['grew up','2000s','playing outside','internet']},
+      {fragment:"summer breaks felt like they lasted forever back then — riding bikes, eating watermelon, staying up way too late", vocab:['summer breaks','lasted forever','riding bikes']},
+      {fragment:"I think childhood memories are so vivid because everything was new — every experience was the first time", vocab:['so vivid','everything was new','first time']},
+    ],
+    topicWords:['childhood','memory','growing up','kid','remember','nostalgia'],
+  },
+  'difficult-decision': {
+    domain:'decisions',
+    points: [
+      {fragment:"the hardest decision was choosing between a safe path and something I actually wanted — and I chose the scary option", vocab:['hardest decision','safe path','scary option']},
+      {fragment:"I went back and forth for weeks — made pros and cons lists, asked everyone I knew, drove myself crazy", vocab:['back and forth','pros and cons','drove myself crazy']},
+      {fragment:"in hindsight, it was absolutely the right call — but at the time I had no idea", vocab:['in hindsight','right call','no idea']},
+      {fragment:"what made it so difficult was that there was no clear right answer — both options had real tradeoffs", vocab:['difficult','no clear right answer','tradeoffs']},
+    ],
+    topicWords:['decision','difficult','choose','tradeoff','right call','regret'],
+  },
+  environment: {
+    domain:'environment & planet',
+    points: [
+      {fragment:"I think the biggest environmental challenge is that the damage is invisible until it's too late", vocab:['biggest challenge','invisible','too late']},
+      {fragment:"individual actions matter, but honestly, the real change has to come from corporations and governments", vocab:['individual actions','real change','corporations']},
+      {fragment:"schools should absolutely teach environmental awareness — kids are way more receptive to it than adults", vocab:['schools','environmental awareness','kids']},
+      {fragment:"it's easy to feel helpless, but even small things like using less plastic add up", vocab:['feel helpless','small things','add up']},
+      {fragment:"I think economic growth and environmental protection don't have to be enemies — green technology is the future", vocab:['economic growth','environmental protection','green technology']},
+    ],
+    topicWords:['environment','climate','sustainable','pollution','green','planet'],
+  },
+  education: {
+    domain:'education & learning',
+    points: [
+      {fragment:"a good teacher isn't just someone who knows the subject — it's someone who makes you care about it", vocab:['good teacher','subject','makes you care']},
+      {fragment:"I'm torn on free university — in theory it's great, but who pays for it?", vocab:['torn','free university','who pays']},
+      {fragment:"extracurriculars are honestly more important than grades in the long run — they teach you stuff a textbook never will", vocab:['extracurriculars','more important','long run']},
+      {fragment:"online learning is convenient, but nothing replaces being in a room with real people", vocab:['online learning','convenient','real people']},
+    ],
+    topicWords:['education','teacher','student','university','learning','classroom','online'],
+  },
+  culture: {
+    domain:'culture & tradition',
+    points: [
+      {fragment:"traditional culture is like the roots of a tree — you can't see them, but they're what keeps everything standing", vocab:['traditional culture','roots','keeps everything standing']},
+      {fragment:"I think young people do value traditions, just not in the same way — they reinterpret them for a modern world", vocab:['young people','value traditions','reinterpret']},
+      {fragment:"globalization has been a double-edged sword — we've gained so much but lost some things that are hard to get back", vocab:['globalization','double-edged sword','lost']},
+      {fragment:"festivals should evolve — if they don't, they become museum pieces instead of living traditions", vocab:['festivals','evolve','museum pieces','living traditions']},
+    ],
+    topicWords:['culture','tradition','heritage','preserve','globalization','festival'],
+  },
+  'work-life': {
+    domain:'work & balance',
+    points: [
+      {fragment:"work-life balance isn't about equal hours — it's about having enough energy left for the people you love", vocab:['work-life balance','equal hours','energy']},
+      {fragment:"some people work long hours because they genuinely love what they do — and honestly, I envy that", vocab:['long hours','genuinely love','envy']},
+      {fragment:"companies can do simple things like not emailing at 10pm and respecting weekends — it's not rocket science", vocab:['simple things','not emailing at 10pm','rocket science']},
+      {fragment:"the concept of balance definitely varies by culture — what's normal in one country would be insane in another", vocab:['varies by culture','normal','insane']},
+    ],
+    topicWords:['work-life balance','burnout','flexibility','remote work','priority'],
+  },
+  'social-media': {
+    domain:'digital life',
+    points: [
+      {fragment:"social media has made us more connected but also more performative — we're curating our lives instead of living them", vocab:['more connected','performative','curating']},
+      {fragment:"it's a mixed bag honestly — I've met amazing people online, but I've also wasted entire afternoons scrolling", vocab:['mixed bag','amazing people','scrolling']},
+      {fragment:"I do think there should be some regulation, especially around kids and data privacy", vocab:['regulation','kids','data privacy']},
+      {fragment:"in ten years, I think social media will be less about posting and more about private, meaningful conversations", vocab:['ten years','less about posting','meaningful conversations']},
+    ],
+    topicWords:['social media','online','platform','connection','mental health','privacy'],
+  },
+  urbanization: {
+    domain:'city & countryside',
+    points: [
+      {fragment:"people move to cities for opportunity — jobs, education, excitement — but they stay for the convenience", vocab:['move to cities','opportunity','convenience']},
+      {fragment:"the biggest downside of city life is the noise — you don't realize how loud it is until you leave", vocab:['downside','noise','until you leave']},
+      {fragment:"cities need more green spaces — not just for the environment, but for people's sanity", vocab:['green spaces','environment','sanity']},
+      {fragment:"remote work might actually slow urbanization because suddenly you don't have to live where you work", vocab:['remote work','slow urbanization','live where you work']},
+    ],
+    topicWords:['city','countryside','urban','rural','move','lifestyle','opportunity'],
+  },
+};
+
+// ============================================================
+//  STYLE PATTERNS — 每种风格的句式模板
+// ============================================================
+const STYLE_PATTERNS = {
+  mf: {
+    openers: [
+      "Oh gosh, that's actually a really good question. ",
+      "You know, I've thought about this before actually. ",
+      "Hmm. Well, let me put it this way — ",
+      "Oh, I love talking about this. Okay, so — ",
+      "That's funny you ask, because I was just thinking about this the other day. ",
+    ],
+    thoughtStarters: [
+      "The thing is, ",
+      "I think the reason is, ",
+      "What I've noticed is, ",
+      "And honestly, ",
+      "For me personally, ",
+    ],
+    transitions: [
+      "Plus, you know, ",
+      "And then on top of that, ",
+      "But here's the deal — ",
+      "Which is funny because ",
+      "And I think maybe what really gets me is ",
+      "But honestly, the best part is ",
+    ],
+    closers: [
+      "Anyway, that's probably more detail than you needed, but there you go. ",
+      "So yeah, I mean, it's not perfect but it works, you know? ",
+      "But hey, that's kind of the beauty of it, right? ",
+      "I could probably go on forever, but that's the gist of it. ",
+      "Anyway, that's how I see it. Not everyone agrees, but hey, that's family for you. ",
+    ],
+    filler: ["you know","kind of","actually","honestly","pretty much","I mean","like"],
+  },
+  kardashian: {
+    openers: [
+      "Okay, so this is literally such a good question. ",
+      "Oh my god, I have so many thoughts on this. ",
+      "Bible. I'm obsessed with this topic. ",
+      "Can I just say — this is everything. ",
+      "Okay, let me be so real with you right now. ",
+    ],
+    thoughtStarters: [
+      "Here's the thing, okay — ",
+      "At the end of the day, ",
+      "If I'm being completely honest, ",
+      "And I'm not gonna lie, ",
+      "The reality is, ",
+    ],
+    transitions: [
+      "And can we talk about ",
+      "Literally, the other thing is ",
+      "Oh and also, like, ",
+      "But wait, here's the tea — ",
+      "And honestly? It's giving ",
+    ],
+    closers: [
+      "That's the tea. Period. ",
+      "I mean, it is what it is, you know? ",
+      "Done and done. That's my truth. ",
+      "So yeah, that's the vibe. ",
+    ],
+    filler: ["literally","bible","obsessed","vibes","honestly","giving","the tea"],
+  },
+  jimmy: {
+    openers: [
+      "Oh man, okay, this is gonna be embarrassing but here we go. ",
+      "Alright, so... you know what, I'm just gonna say it. ",
+      "Okay so, this is one of those things where... ugh. ",
+      "I wish I had a cooler answer for this, but I don't. ",
+    ],
+    thoughtStarters: [
+      "Look, I'm not gonna pretend like ",
+      "The thing about being Asian is, ",
+      "In my experience — and it's not a great experience — ",
+      "Here's the thing my mom would say, ",
+    ],
+    transitions: [
+      "And then, of course, ",
+      "But you know what's worse? ",
+      "And here's the kicker — ",
+      "So then I'm thinking, ",
+    ],
+    closers: [
+      "So yeah, that's my sad little story. Thanks for listening. ",
+      "Anyway, I've said too much. You're welcome. ",
+      "And that's why I have trust issues. The end. ",
+      "So that happened. I'm fine. Everything's fine. ",
+    ],
+    filler: ["like","you know","honestly","I mean","whatever","that's the thing"],
+  },
+};
+
+// ============================================================
 //  EXPRESSIONS — 按场景分类的地道表达库
 // ============================================================
 const EXPR_CATEGORIES = ['全部','日常寒暄','表达观点','同意/反对','描述感受','过渡衔接','强调夸张','讲故事','结束语'];
@@ -627,88 +993,85 @@ function getDNA(styleId) {
 // ============================================================
 //  ANSWER GENERATION
 // ============================================================
-function generateAnswer(question, dna, styleName) {
+function generateAnswer(question, dna, styleName, topicId) {
   if (!dna) return '请先投喂语料或选择有数据包支持的风格。';
-  const markers = dna.discourseMarkers || [];
-  const sig = dna.sigExpr || [];
-  const words = dna.topWords || [];
-  const filler = (arr,n)=>{const a=[];for(let i=0;i<n;i++){const m=arr[Math.floor(Math.random()*arr.length)];a.push(m.word||(typeof m==='string'?m:m.phrase));}return a;};
 
-  // Determine question type
-  const q = question.toLowerCase();
-  const isDescribe = q.includes('describe') || question.length > 100;
-  const isOpinion = q.includes('think')||q.includes('opinion')||q.includes('important')||q.includes('should')||q.includes('agree');
-  const isPersonal = q.includes('you') && !isOpinion && !isDescribe;
-  const isWhy = q.includes('why') || q.includes('explain');
+  // ── 1. Get topic content & style patterns ──
+  const topic = TOPIC_CONTENT[topicId] || { domain:'general', points:[{fragment:'it means a lot to me personally',vocab:[]}], topicWords:[] };
+  const style = STYLE_PATTERNS[styleId] || STYLE_PATTERNS.mf;
+  const markers = (dna.discourseMarkers||[]).filter(m=>m.length<12);
 
-  let intro, body, outro;
-  const introMarkers = markers.slice(0,3);
-  const m1 = introMarkers[0]||'well';
-  const m2 = introMarkers[1]||'you know';
-  const m3 = introMarkers[2]||'honestly';
+  // ── 2. Build opener in style ──
+  const opener = pick(style.openers);
 
-  if (isDescribe) {
-    intro = `${capitalize(m1)}, that's actually a great question, ${m2}. `;
-    body = `So ${m2}, I'd say... ${m3}, this topic really reminds me of something. ${buildSentences(dna, 4)}`;
-    outro = `And ${m2}, at the end of the day, I think that's what makes it so memorable, ${m3}.`;
-  } else if (isOpinion) {
-    intro = `${capitalize(m1)}, ${m2}, that's something I've thought about before. `;
-    const stance = Math.random()>0.5?'definitely think':'kind of feel like';
-    body = `I ${stance} that ${buildSentences(dna, 2)}. ${capitalize(m3)}, the way I see it, ${buildSentences(dna, 3)}`;
-    outro = `So yeah ${m2}, that's pretty much where I stand on this.`;
-  } else if (isWhy) {
-    intro = `${capitalize(m1)}, ${m2}, there are a few reasons actually. `;
-    body = `First of all, I think ${buildSentences(dna, 2)}. ${capitalize(m3)}, another thing is ${buildSentences(dna, 2)}.`;
-    outro = `So ${m2}, those are the main reasons I'd say.`;
-  } else {
-    intro = `${capitalize(m1)}, ${m2}, let me think about that. `;
-    body = `I'd say ${buildSentences(dna, 3)}. ${capitalize(m3)}, ${buildSentences(dna, 2)}.`;
-    outro = `But yeah ${m2}, that's pretty much it!`;
-  }
+  // ── 3. Pick topic-relevant points ──
+  const points = shuffle([...topic.points]);
+  const needed = question.length > 80 ? 3 : 2;
+  const selected = points.slice(0, needed);
 
-  // Inject signature expressions
-  if (sig.length > 0) {
-    const sigPhrase = sig[Math.floor(Math.random()*sig.length)];
-    body = body.replace(/\bi think\b/i, sigPhrase);
-  }
+  // ── 4. Assemble body: each point gets a style thought-starter or transition ──
+  const bodyParts = selected.map((point, i) => {
+    const prefix = i === 0 ? pick(style.thoughtStarters) : pick(style.transitions);
+    const filler = pick(style.filler);
+    let fragment = point.fragment;
+    // Weave in a style filler word naturally
+    fragment = injectFiller(fragment, filler);
+    return `${prefix}${fragment}. `;
+  });
 
-  // Word substitutions
-  const subs = {'good':['great','amazing','fantastic'],'bad':['terrible','awful'],'nice':['lovely','sweet'],'big':['huge','massive'],'small':['tiny','little'],'very':['really','super','incredibly']};
-  for (const [k,v] of Object.entries(subs)) {
-    const word = words.find(w=>v.includes(w.word||w));
-    if (word) {
-      const sub = v[Math.floor(Math.random()*v.length)];
-      body = body.replace(new RegExp('\\b'+k+'\\b','gi'), sub);
+  const body = bodyParts.join('');
+
+  // ── 5. Closer in style ──
+  const closer = pick(style.closers);
+
+  // ── 6. Inject DNA discourse markers where natural ──
+  const marker = pick(markers);
+  let fullAnswer = opener + body + closer;
+  if (marker) {
+    // Add marker near the middle as a natural interjection
+    const mid = Math.floor(fullAnswer.length / 2);
+    const dotIdx = fullAnswer.indexOf('.', mid);
+    if (dotIdx > 0) {
+      fullAnswer = fullAnswer.slice(0, dotIdx+1) + ' ' + marker + ', ' + fullAnswer.slice(dotIdx+2);
     }
   }
 
-  const fullAnswer = intro + body + outro;
   return formatAnswer(fullAnswer, dna);
 }
 
-function buildSentences(dna, n) {
-  const words = (dna.topWords||[]).map(w=>w.word||w).filter(w=>w.length>3);
-  const bg = (dna.topBigrams||[]).map(b=>b.phrase);
-  const templates = [
-    `it's really about how people connect with each other, ${pick(bg, 'you know')}. `,
-    `sometimes you just have to ${pick(words,'go with')} the flow, ${pick(bg,'and see')} what happens. `,
-    `I feel like the most important thing is ${pick(words,'being')} open to new experiences. `,
-    `there's something about ${pick(words,'moments')} like these that really ${pick(words,'stick')} with you. `,
-    `you ${pick(bg,'don\'t always')} get what you expect, but that's kind of the beauty of it. `,
-    `the way I remember it, it was just one of those ${pick(words,'things')} you can't really explain. `,
+// Weave a filler word naturally into a sentence fragment
+function injectFiller(fragment, filler) {
+  const strategies = [
+    // After "it's" / "is"
+    () => fragment.replace(/\b(it's|is)\b/i, `$1 ${filler}`),
+    // After comma
+    () => fragment.replace(/,\s*/, `, ${filler}, `),
+    // Before "but" / "and"
+    () => fragment.replace(/\b(but|and)\b/i, `${filler}, $1`),
+    // Before verb (simple heuristic: word after "that" or subject)
+    () => fragment.replace(/\b(that)\s+(\w)/i, `$1 ${filler} $2`),
+    // Start of parenthetical
+    () => fragment.replace(/\(/, `(${filler}, `),
+    // Append at natural pause (after first clause ending in comma or period context)
+    () => { const idx = fragment.indexOf(','); return idx > 0 ? fragment.slice(0,idx)+`, ${filler},`+fragment.slice(idx+1) : `${filler}, `+fragment; },
   ];
-  const result = [];
-  for (let i=0;i<n;i++) {
-    result.push(pick(templates, templates[0]));
+  const fn = strategies[Math.floor(Math.random() * strategies.length)];
+  return fn();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  return result.join('');
+  return a;
 }
 
 function pick(arr, fallback) {
   if (!arr || arr.length===0) return fallback;
   return arr[Math.floor(Math.random()*arr.length)];
 }
-function capitalize(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
 
 function formatAnswer(text, dna) {
   // Highlight key expressions from DNA
@@ -822,7 +1185,7 @@ function genAnswer() {
   const profile = DEFAULT_PROFILES.find(p=>p.id===styleId) || S.profiles.find(p=>p.id===styleId) || DEFAULT_PROFILES[0];
   const dna = getDNA(styleId);
   if (!dna) { toast('⚠️ 该风格无数据，请先投喂语料'); return; }
-  const answer = generateAnswer(q, dna, profile.name);
+  const answer = generateAnswer(q, dna, profile.name, tid);
   const acard = document.getElementById('acard');
   acard.innerHTML = `<div class="acard-header">
       <span class="acard-style">🎭 ${profile.name} · ${profile.tag||''}</span>
