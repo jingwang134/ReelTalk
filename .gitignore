@@ -1,3 +1,4 @@
-.workbuddy/
+.workbuddy/*
+!.workbuddy/memory/
 *.tar.gz
 *.zip
