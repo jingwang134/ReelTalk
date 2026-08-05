@@ -94,6 +94,16 @@ button { font-family:var(--font); cursor:pointer; }
 .acard .acard-text .hl.saved { background:var(--green-l); }
 .acard .acard-actions { display:flex; gap:10px; margin-top:16px; }
 
+/* Answer Card Sections */
+.acard-section { margin-top:16px; padding-top:16px; border-top:1px dashed var(--border); }
+.acard-section-title { font-size:12px; font-weight:800; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+.acard-zh { font-size:14px; line-height:1.8; color:var(--text2); }
+.expr-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.expr-chip { display:inline-flex; flex-direction:column; gap:2px; padding:8px 12px; background:var(--bg2); border-radius:var(--radius-xs); border:1px solid var(--border); cursor:pointer; transition:.15s; font-size:13px; }
+.expr-chip:hover { background:var(--green-l); border-color:var(--green); }
+.expr-chip b { color:var(--green-d); font-weight:700; }
+.expr-chip-zh { font-size:11px; color:var(--text2); }
+
 @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
 /* Practice Overlay */
@@ -685,6 +695,41 @@ const TOPIC_CONTENT = {
       {fragment:"what I love about it is that every character feels real — flawed and complicated, like actual people", vocab:['characters','real','flawed']},
     ],
     topicWords:['movie','film','book','story','character','plot','emotional','powerful'],
+    // Part 2 结构化示例
+    examples: [
+      {
+        title: "Modern Family",
+        titleZh: "《摩登家庭》",
+        type: "a TV sitcom",
+        typeZh: "一部情景喜剧",
+        when: "I started watching it back in college, around 2019, when a roommate recommended it to me",
+        whenZh: "我大概从2019年上大学的时候开始看的，当时室友推荐给我的",
+        about: "It's about three related families living in suburban LA — a traditional dad, a gay couple who adopt a baby, and a Colombian woman who marries a much older man. It follows their daily lives, the good, the bad, and the hilariously awkward moments.",
+        aboutZh: "这部剧讲的是三个有血缘关系的家庭住在洛杉矶郊区的故事——一个传统的老爸、一对收养了宝宝的同性恋伴侣，以及一个嫁给年长男人的哥伦比亚女人。它记录了他们的日常生活，有好的、坏的，还有尴尬又好笑的时刻。",
+        why: "What I love most is how real the characters feel. They're all flawed and messy, but you root for them anyway. Every episode has these heartwarming moments that just catch you off guard.",
+        whyZh: "我最喜欢的是角色都很真实。他们有缺点、生活一团糟，但你会不由自主地为他们加油。每一集都有一些暖心的瞬间，让你猝不及防地被感动。",
+        recommend: "I'd recommend it to anyone who wants to learn real American English while genuinely laughing out loud. It's also great for people who believe family doesn't have to look perfect to be perfect.",
+        recommendZh: "我会推荐给所有想学地道美式英语、同时又想真正笑出声的人。也很适合那些相信家庭不需要看起来完美才是真正完美的人。",
+        extra: "I've probably watched the whole eleven seasons three times by now, and I still catch new jokes every single time.",
+        extraZh: "完整的三季我已经刷了三遍了，每次看都能发现新的笑点。",
+      },
+      {
+        title: "The Shawshank Redemption",
+        titleZh: "《肖申克的救赎》",
+        type: "a classic drama film",
+        typeZh: "一部经典剧情片",
+        when: "I first watched it in high school, during a film appreciation class, and I've rewatched it at least once a year since then",
+        whenZh: "我第一次看是在高中的电影鉴赏课上，从那以后每年至少都会重看一遍",
+        about: "It's about a banker named Andy who's wrongfully imprisoned for murdering his wife. In prison, he befriends Red, a long-term inmate, and over nearly two decades, he maintains hope and eventually escapes through an elaborate tunnel he dug with a tiny rock hammer.",
+        aboutZh: "这部电影讲的是一个叫安迪的银行家被冤枉谋杀妻子而入狱。在监狱里，他和一个长期服刑的犯人瑞德成了朋友。在近二十年的时间里，他始终保持着希望，最终通过一个他用小锤子挖出来的复杂隧道成功越狱。",
+        why: "What gets me every time is the theme of hope. Andy never lets the prison break his spirit, and the scene where he escapes and stands in the rain with his arms open — it still gives me chills. It's a story about resilience and the human spirit.",
+        whyZh: "每次看最让我动容的是关于希望的主题。安迪从未让监狱摧毁他的精神，他越狱后站在雨中张开双臂的那个画面——至今让我起鸡皮疙瘩。这是一个关于韧性和人类精神的故事。",
+        recommend: "I'd recommend it to anyone going through a tough time who needs a reminder that hope is a powerful thing. It's also perfect for people who love slow-burn stories with deeply satisfying endings.",
+        recommendZh: "我会推荐给所有正在经历困难时期、需要提醒自己希望有多强大的人。也很适合喜欢慢热但结局非常令人满足的故事的人。",
+        extra: "What makes it even more special is that it wasn't a box office hit when it first came out, but over the years it's become one of the most beloved films of all time.",
+        extraZh: "让它更特别的是，这部电影上映时票房并不出色，但多年来却成为了有史以来最受喜爱的电影之一。",
+      },
+    ],
   },
   'skill-learned': {
     domain:'learning & growth',
@@ -993,42 +1038,151 @@ function getDNA(styleId) {
 // ============================================================
 //  ANSWER GENERATION
 // ============================================================
-function generateAnswer(question, dna, styleId, topicId) {
-  if (!dna) return '请先投喂语料或选择有数据包支持的风格。';
+// ── Part 2 重点表达库 ──
+const KEY_EXPRESSIONS = [
+  { en: "speaks to me", zh: "说到我心里；引起共鸣" },
+  { en: "critically acclaimed", zh: "广受好评的" },
+  { en: "gives me chills", zh: "让我起鸡皮疙瘩；让我震撼" },
+  { en: "root for", zh: "为……加油；支持" },
+  { en: "catch you off guard", zh: "让你猝不及防" },
+  { en: "laughing out loud", zh: "放声大笑" },
+  { en: "heartwarming moments", zh: "暖心的瞬间" },
+  { en: "flawed and messy", zh: "有缺点且生活一团糟" },
+  { en: "resilience and the human spirit", zh: "韧性和人类精神" },
+  { en: "slow-burn stories", zh: "慢热的故事" },
+  { en: "deeply satisfying", zh: "令人非常满足的" },
+  { en: "box office hit", zh: "票房热门" },
+  { en: "of all time", zh: "有史以来" },
+  { en: "go through a tough time", zh: "经历困难时期" },
+  { en: "wrongfully imprisoned", zh: "被冤枉入狱" },
+  { en: "maintain hope", zh: "保持希望" },
+  { en: "break his spirit", zh: "摧毁他的精神" },
+  { en: "elaborate tunnel", zh: "复杂的隧道" },
+  { en: "long-term inmate", zh: "长期服刑的犯人" },
+  { en: "adopt a baby", zh: "收养宝宝" },
+  { en: "hilariously awkward", zh: "尴尬又好笑的" },
+  { en: "feel real", zh: "感觉很真实" },
+  { en: "catch new jokes", zh: "发现新的笑点" },
+  { en: "every single time", zh: "每一次" },
+  { en: "warm and welcoming", zh: "热情好客的" },
+  { en: "pace of life", zh: "生活节奏" },
+  { en: "bump into", zh: "偶遇；碰见" },
+  { en: "the soul of the place", zh: "这个地方的灵魂" },
+  { en: "learning the ropes", zh: "学习门道；熟悉业务" },
+  { en: "lose track of time", zh: "忘记时间" },
+  { en: "all over the place", zh: "五花八门；杂乱无章" },
+  { en: "live concert", zh: "现场演唱会" },
+  { en: "reset button", zh: "重置键（比喻重新开始）" },
+  { en: "post-pandemic", zh: "后疫情时代" },
+  { en: "take for granted", zh: "认为理所当然" },
+  { en: "family dynamics", zh: "家庭关系动态" },
+  { en: "wouldn't trade it for anything", zh: "无论如何都不会换" },
+  { en: "drove myself crazy", zh: "把自己逼疯了" },
+  { en: "in hindsight", zh: "事后看来" },
+  { en: "the right call", zh: "正确的决定" },
+  { en: "stumbled upon", zh: "偶然发现" },
+  { en: "museum pieces", zh: "博物馆展品（比喻过时的事物）" },
+  { en: "double-edged sword", zh: "双刃剑" },
+  { en: "not rocket science", zh: "不是火箭科学（比喻不难）" },
+  { en: "a mixed bag", zh: "好坏参半" },
+  { en: "curating our lives", zh: "精心策划我们的生活" },
+  { en: "back and forth", zh: "反复斟酌；来回" },
+  { en: "pros and cons", zh: "利弊" },
+  { en: "no clear right answer", zh: "没有明确正确答案" },
+  { en: "kind of meditative", zh: "有点冥想般的（让人平静的）" },
+  { en: "worth it", zh: "值得" },
+  { en: "freeze in your memory", zh: "定格在记忆中" },
+  { en: "end of the world", zh: "世界末日（比喻天塌了）" },
+  { en: "second home", zh: "第二个家" },
+  { en: "can't live without", zh: "离不开" },
+  { en: "cutting-edge", zh: "尖端的；最前沿的" },
+  { en: "obsolete tomorrow", zh: "明天就过时" },
+];
 
-  // ── 1. Get topic content & style patterns ──
+function generateAnswer(question, dna, styleId, topicId) {
+  if (!dna) return { en: '请先投喂语料或选择有数据包支持的风格。', zh: '', expressions: [] };
+
   const topic = TOPIC_CONTENT[topicId] || { domain:'general', points:[{fragment:'it means a lot to me personally',vocab:[]}], topicWords:[] };
   const style = STYLE_PATTERNS[styleId] || STYLE_PATTERNS.mf;
+
+  // Part 2 长题（>80字符）且有结构化示例 → 用示例生成完整故事
+  if (question.length > 80 && topic.examples && topic.examples.length > 0) {
+    return buildStructuredAnswer(topic, style, dna);
+  }
+
+  // Part 1 短题 → 片段拼接
+  return buildShortAnswer(topic, style, dna);
+}
+
+function buildStructuredAnswer(topic, style, dna) {
+  const ex = pick(topic.examples);
+  const opener = pick(style.openers);
+  const closer = pick(style.closers);
   const markers = (dna.discourseMarkers||[]).filter(m=>m.length<12);
 
-  // ── 2. Build opener in style ──
+  // ── 组装英文答案（按雅思 Part 2 四段式框架）─
+  const enParts = [
+    `${opener}The one I'd pick is ${ex.title} — it's ${ex.type}. `,
+    `${pick(style.transitions)}${ex.when}. `,
+    `${pick(style.thoughtStarters)}${ex.about} `,
+    `${pick(style.transitions)}${ex.why} `,
+    `${pick(style.transitions)}${ex.recommend} `,
+  ];
+  if (ex.extra) {
+    enParts.push(`${pick(style.transitions)}${ex.extra} `);
+  }
+  enParts.push(closer);
+  let fullEn = enParts.join('');
+
+  // 插入话语标记
+  const marker = pick(markers);
+  if (marker) {
+    const mid = Math.floor(fullEn.length / 2);
+    const dotIdx = fullEn.indexOf('.', mid);
+    if (dotIdx > 0) {
+      fullEn = fullEn.slice(0, dotIdx+1) + ' ' + marker + ', ' + fullEn.slice(dotIdx+2);
+    }
+  }
+
+  // ── 组装中文翻译（不含风格 opener/closer）─
+  const zhParts = [
+    `我会选${ex.titleZh}——${ex.typeZh}。`,
+    `${ex.whenZh}。`,
+    `${ex.aboutZh}`,
+    `${ex.whyZh}`,
+    `${ex.recommendZh}。`,
+  ];
+  if (ex.extraZh) {
+    zhParts.push(`${ex.extraZh}。`);
+  }
+  const fullZh = zhParts.join('');
+
+  // ── 提取重点表达 ─
+  const expressions = extractExpressions(fullEn);
+
+  return { en: formatAnswer(fullEn, dna), zh: fullZh, expressions };
+}
+
+function buildShortAnswer(topic, style, dna) {
+  const markers = (dna.discourseMarkers||[]).filter(m=>m.length<12);
   const opener = pick(style.openers);
-
-  // ── 3. Pick topic-relevant points ──
   const points = shuffle([...topic.points]);
-  const needed = question.length > 80 ? 3 : 2;
-  const selected = points.slice(0, needed);
+  const selected = points.slice(0, 2);
 
-  // ── 4. Assemble body: each point gets a style thought-starter or transition ──
   const bodyParts = selected.map((point, i) => {
     const prefix = i === 0 ? pick(style.thoughtStarters) : pick(style.transitions);
     const filler = pick(style.filler);
     let fragment = point.fragment;
-    // Weave in a style filler word naturally
     fragment = injectFiller(fragment, filler);
     return `${prefix}${fragment}. `;
   });
 
   const body = bodyParts.join('');
-
-  // ── 5. Closer in style ──
   const closer = pick(style.closers);
 
-  // ── 6. Inject DNA discourse markers where natural ──
   const marker = pick(markers);
   let fullAnswer = opener + body + closer;
   if (marker) {
-    // Add marker near the middle as a natural interjection
     const mid = Math.floor(fullAnswer.length / 2);
     const dotIdx = fullAnswer.indexOf('.', mid);
     if (dotIdx > 0) {
@@ -1036,7 +1190,18 @@ function generateAnswer(question, dna, styleId, topicId) {
     }
   }
 
-  return formatAnswer(fullAnswer, dna);
+  return { en: formatAnswer(fullAnswer, dna), zh: '', expressions: [] };
+}
+
+function extractExpressions(answer) {
+  const found = [];
+  const lower = answer.toLowerCase();
+  KEY_EXPRESSIONS.forEach(expr => {
+    if (lower.includes(expr.en.toLowerCase()) && !found.some(f => f.en === expr.en)) {
+      found.push(expr);
+    }
+  });
+  return found.slice(0, 8);
 }
 
 // Weave a filler word naturally into a sentence fragment
@@ -1186,13 +1351,36 @@ function genAnswer() {
   const dna = getDNA(styleId);
   if (!dna) { toast('⚠️ 该风格无数据，请先投喂语料'); return; }
   try {
-    const answer = generateAnswer(q, dna, styleId, tid);
+    const result = generateAnswer(q, dna, styleId, tid);
     const acard = document.getElementById('acard');
     if (!acard) { toast('⚠️ 页面加载异常，请刷新'); return; }
+
+    // 重点表达 HTML
+    let exprHtml = '';
+    if (result.expressions && result.expressions.length > 0) {
+      exprHtml = `<div class="acard-section">
+        <div class="acard-section-title">📌 重点表达</div>
+        <div class="expr-chips">
+          ${result.expressions.map(e => `<span class="expr-chip" onclick="saveExprFromHL('${e.en.replace(/'/g,"\\'")}')" title="${e.zh}"><b>${e.en}</b><span class="expr-chip-zh">${e.zh}</span></span>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    // 中文翻译 HTML
+    let zhHtml = '';
+    if (result.zh) {
+      zhHtml = `<div class="acard-section">
+        <div class="acard-section-title">🇨🇳 中文翻译</div>
+        <div class="acard-zh">${result.zh}</div>
+      </div>`;
+    }
+
     acard.innerHTML = `<div class="acard-header">
         <span class="acard-style">🎭 ${profile.name} · ${profile.tag||''}</span>
       </div>
-      <div class="acard-text">${answer}</div>
+      <div class="acard-text" id="answerText">${result.en}</div>
+      ${zhHtml}
+      ${exprHtml}
       <div class="acard-actions">
         <button class="btn btn-accent" onclick="startPractice()">🎧 跟读练习</button>
         <button class="btn btn-secondary btn-sm" onclick="genAnswer()">🔄 重新生成</button>
