@@ -543,7 +543,7 @@ const TOPIC_CONTENT = {
     domain:'leisure & interests',
     points: [
       {fragment:"in my free time, I love cooking — there's something therapeutic about chopping vegetables after a long day", vocab:['free time','cooking','therapeutic']},
-      {fragment:"I picked up photography a few years ago and now I can't put the camera down", vocab:['picked up','photography','can't put down']},
+      {fragment:"I picked up photography a few years ago and now I can't put the camera down", vocab:['picked up','photography','can\'t put down']},
       {fragment:"I used to play the guitar but stopped for a while — been meaning to pick it back up honestly", vocab:['used to','guitar','pick it back up']},
       {fragment:"I'm definitely more of an indoors person — give me a good book and a cup of tea over a crowded bar any day", vocab:['indoors','book','crowded']},
       {fragment:"hobbies are so important because they give you something that's just for you, not for work or anyone else", vocab:['important','just for you']},
@@ -604,7 +604,7 @@ const TOPIC_CONTENT = {
       {fragment:"I'm really close with my family — we have this group chat that blows up like ten times a day", vocab:['close','family','group chat']},
       {fragment:"my mom is honestly my biggest inspiration — the way she handles everything with such grace", vocab:['mom','inspiration','grace']},
       {fragment:"we have this tradition of Sunday dinners — no matter how busy everyone is, we make it work", vocab:['tradition','Sunday dinners','make it work']},
-      {fragment:"growing up with siblings was chaotic but honestly, I wouldn't trade it for anything", vocab:['siblings','chaotic','wouldn't trade']},
+      {fragment:"growing up with siblings was chaotic but honestly, I wouldn't trade it for anything", vocab:["siblings","chaotic","wouldn't trade"]},
       {fragment:"I think family dynamics have changed a lot — we're more open with each other than previous generations", vocab:['family dynamics','changed','open']},
       {fragment:"my friends are basically family at this point — we've been through so much together", vocab:['friends','family','been through']},
     ],
@@ -993,7 +993,7 @@ function getDNA(styleId) {
 // ============================================================
 //  ANSWER GENERATION
 // ============================================================
-function generateAnswer(question, dna, styleName, topicId) {
+function generateAnswer(question, dna, styleId, topicId) {
   if (!dna) return '请先投喂语料或选择有数据包支持的风格。';
 
   // ── 1. Get topic content & style patterns ──
@@ -1185,18 +1185,24 @@ function genAnswer() {
   const profile = DEFAULT_PROFILES.find(p=>p.id===styleId) || S.profiles.find(p=>p.id===styleId) || DEFAULT_PROFILES[0];
   const dna = getDNA(styleId);
   if (!dna) { toast('⚠️ 该风格无数据，请先投喂语料'); return; }
-  const answer = generateAnswer(q, dna, profile.name, tid);
-  const acard = document.getElementById('acard');
-  acard.innerHTML = `<div class="acard-header">
-      <span class="acard-style">🎭 ${profile.name} · ${profile.tag||''}</span>
-    </div>
-    <div class="acard-text">${answer}</div>
-    <div class="acard-actions">
-      <button class="btn btn-accent" onclick="startPractice()">🎧 跟读练习</button>
-      <button class="btn btn-secondary btn-sm" onclick="genAnswer()">🔄 重新生成</button>
-    </div>`;
-  acard.classList.add('show');
-  addXP(5);
+  try {
+    const answer = generateAnswer(q, dna, styleId, tid);
+    const acard = document.getElementById('acard');
+    if (!acard) { toast('⚠️ 页面加载异常，请刷新'); return; }
+    acard.innerHTML = `<div class="acard-header">
+        <span class="acard-style">🎭 ${profile.name} · ${profile.tag||''}</span>
+      </div>
+      <div class="acard-text">${answer}</div>
+      <div class="acard-actions">
+        <button class="btn btn-accent" onclick="startPractice()">🎧 跟读练习</button>
+        <button class="btn btn-secondary btn-sm" onclick="genAnswer()">🔄 重新生成</button>
+      </div>`;
+    acard.classList.add('show');
+    addXP(5);
+  } catch(e) {
+    console.error('genAnswer error:', e);
+    toast('⚠️ 生成失败: ' + e.message);
+  }
 }
 
 // ============ PRACTICE ============
@@ -1428,8 +1434,8 @@ function addProfileUI() {
 function init() {
   updateHeader();
   renderTopicView();
-  // Auto-select first topic
-  if (!S.activeTopic) { S.activeTopic = 'hometown'; refreshQuestion(); }
+  if (!S.activeTopic) S.activeTopic = 'hometown';
+  refreshQuestion();
   save();
 }
 init();
