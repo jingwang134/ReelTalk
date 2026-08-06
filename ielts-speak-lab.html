@@ -201,6 +201,20 @@ button { font-family:var(--font); cursor:pointer; }
 .kw-tag small { font-weight:400; opacity:.7; font-size:11px; margin-left:2px; }
 .kw-tag small:empty { display:none; }
 
+/* Phrase-centered cards (new format) */
+.phrase-card .phrase-main { font-size:19px; font-weight:700; color:var(--text); line-height:1.5; margin-bottom:4px; }
+.phrase-card .phrase-meaning { font-size:14px; color:var(--text2); margin-bottom:14px; padding-bottom:12px; border-bottom:1px dashed var(--border); }
+.ph-label { flex-shrink:0; font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:var(--green-l); color:var(--green-d); margin-right:8px; display:inline-block; vertical-align:1px; }
+.ph-usage-label { background:var(--blue-l); color:var(--blue); }
+.ph-ielts-label { background:var(--purple-l); color:var(--purple); }
+.phrase-example { font-size:13px; color:var(--text2); font-style:italic; line-height:1.7; margin-bottom:10px; }
+.phrase-example .ph-ex-text { color:var(--text); }
+.phrase-example .ph-source { display:block; color:var(--text3); font-style:normal; font-size:11px; margin-top:2px; }
+.phrase-usage, .phrase-ielts { font-size:13px; line-height:1.7; margin-bottom:10px; display:flex; align-items:flex-start; }
+.phrase-usage .ph-usage-text, .phrase-ielts .ph-ielts-text { color:var(--text); }
+.phrase-ielts { margin-bottom:4px; }
+.phrase-ielts .ph-ielts-text { background:#f8f9fa; padding:8px 12px; border-radius:8px; border-left:3px solid var(--purple); font-style:italic; }
+
 /* Topic-level Thinking Framework */
 .thinking-framework { background:linear-gradient(135deg,#f0f7ff,#e8f4fd); border-radius:14px; margin-bottom:20px; overflow:hidden; border:1px solid #d0e3f5; }
 .thinking-framework .tf-header { padding:14px 18px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; transition:.15s; }
@@ -1462,165 +1476,75 @@ const TOPIC_EXPRESSIONS = {
   "hometown": [
     {
       "function": "开场破题",
-      "en": "We're very different. Jay's from the city. He has a big business. I come from a small village. Very poor but very, very beautiful.",
-      "highlight": "I come from a small village. Very poor but very, very beautiful.",
+      "phrase": "I come from a small village.",
+      "meaning": "我来自一个小村庄",
+      "example": "Jay's from the city. He has a big business. I come from a small village. Very poor but very, very beautiful.",
       "source": "Modern Family S01E01",
-      "translation": "我们很不一样。杰来自大城市，生意做得很大。而我来自一个小村庄，虽然很穷，但非常非常美。",
-      "keywords": [
-        {
-          "en": "come from a small village",
-          "zh": "来自一个小村庄（描述出生地的经典句式）",
-          "category": "B2 高频表达",
-          "context": "I come from a small village."
-        },
-        {
-          "en": "very poor but very, very beautiful",
-          "zh": "虽然很穷但非常美（先抑后扬的对比描述）",
-          "category": "B2 描述句型",
-          "context": "Very poor but very, very beautiful."
-        },
-      ]
+      "usage": "回答「你的家乡在哪」的标准开场。先说位置，再用 poor but beautiful 这类对比让描述立体、不空洞。",
+      "ielts_example": "I come from a small village in Sichuan. It's not famous, but it's very, very peaceful."
     },
     {
       "function": "开场破题",
-      "en": "When we first met, he wouldn't even look at me... because I was a hick from the farm in Missouri, and he's a big city mouse.",
-      "highlight": "I was a hick from the farm in Missouri, and he's a big city mouse.",
+      "phrase": "a hick from the farm",
+      "meaning": "来自农场的乡巴佬（自嘲式表达出身）",
+      "example": "When we first met, he wouldn't even look at me... because I was a hick from the farm in Missouri, and he's a big city mouse.",
       "source": "Modern Family S01E03",
-      "translation": "我们第一次见面时，他连看都不看我一眼……因为我是个密苏里州农场来的乡巴佬，而他是个大城市人。",
-      "keywords": [
-        {
-          "en": "a hick from the farm",
-          "zh": "来自农场的乡巴佬（自嘲式表达出身）",
-          "category": "C1 口语习语",
-          "context": "I was a hick from the farm in Missouri"
-        },
-        {
-          "en": "a big city mouse",
-          "zh": "大城市人（与 country mouse 乡巴佬相对）",
-          "category": "C1 口语习语",
-          "context": "he's a big city mouse"
-        },
-      ]
+      "usage": "自嘲或幽默地描述自己来自乡村，适合 Part 1 聊家乡背景。注意 a hick 带自嘲意味，只能说自己，不能说别人。",
+      "ielts_example": "People sometimes assume I'm a hick from the countryside, but my hometown is actually a fairly modern town."
     },
     {
       "function": "表达观点",
-      "en": "I don't know. I'm from Denver. We don't have a lot of pho there. Uh, just to be sure, could you show me how hard Lily got hit?",
-      "highlight": "I'm from Denver. We don't have a lot of pho there.",
+      "phrase": "I'm from + 地名. We don't have a lot of + 东西.",
+      "meaning": "我是……人，我们那儿没什么……（解释家乡缺少某样东西）",
+      "example": "I don't know. I'm from Denver. We don't have a lot of pho there.",
       "source": "Modern Family S01E06",
-      "translation": "我不知道。我是丹佛人，我们那儿没什么越南米粉。呃，保险起见，你能让我看看莉莉被撞得有多厉害吗？",
-      "keywords": [
-        {
-          "en": "just to be sure",
-          "zh": "保险起见；为了万无一失",
-          "category": "B2 过渡表达",
-          "context": "just to be sure, could you show me"
-        },
-      ]
+      "usage": "用「I'm from + 地名 + We don't have a lot of + 东西」解释家乡的饮食/文化特点，适合聊家乡食物或地域差异。",
+      "ielts_example": "I'm from a coastal city. We don't have a lot of spicy food there, unlike the inland provinces."
     },
     {
       "function": "表达观点",
-      "en": "I used to live down here, you know. Yeah, that's why I come down here. Look there. That was my old apartment. After I left Javier, that's all I could afford. It's still part of me.",
-      "highlight": "That was my old apartment. After I left Javier, that's all I could afford. It's still part of me.",
+      "phrase": "It's still part of me.",
+      "meaning": "它依然是我的一部分（对过往的珍视）",
+      "example": "That was my old apartment. After I left Javier, that's all I could afford. It's still part of me.",
       "source": "Modern Family S01E18",
-      "translation": "你知道吗，我以前就住在这片。对，这就是我常来这边的原因。看那边，那是我以前的公寓。离开哈维尔之后，那是我唯一住得起的地方。它依然是我人生的一部分。",
-      "keywords": [
-        {
-          "en": "that's all I could afford",
-          "zh": "那是我唯一负担得起的",
-          "category": "B2 表达",
-          "context": "After I left Javier, that's all I could afford."
-        },
-        {
-          "en": "It's still part of me",
-          "zh": "它依然是我生命的一部分（对过往的珍视）",
-          "category": "C1 情感表达",
-          "context": "It's still part of me."
-        },
-      ]
+      "usage": "表达对家乡/旧居/过往经历的珍视——即使离开了，影响仍在。是 Part 1 家乡话题和 Part 2 记忆类话题的升华句。",
+      "ielts_example": "I left my hometown ten years ago, but it's still part of me — the food, the people, the pace of life."
     },
     {
       "function": "举例说明",
-      "en": "Oh, one of my favorite childhood memories was attending the Moscow Marionette Theater. I grew up one mile away from Missouri's largest waterslide. And third largest in the country.",
-      "highlight": "One of my favorite childhood memories was attending the Moscow Marionette Theater.",
+      "phrase": "one of my favorite childhood memories",
+      "meaning": "我童年最美好的记忆之一",
+      "example": "One of my favorite childhood memories was attending the Moscow Marionette Theater. I grew up one mile away from Missouri's largest waterslide.",
       "source": "Modern Family S01E12",
-      "translation": "哦，我童年最美好的记忆之一就是去看莫斯科木偶剧院的演出。我长大的地方离密苏里州最大的水滑梯只有一英里远。那可是全美第三大的水滑梯。",
-      "keywords": [
-        {
-          "en": "one of my favorite childhood memories",
-          "zh": "我童年最美好的记忆之一",
-          "category": "B2 表达",
-          "context": "One of my favorite childhood memories was"
-        },
-        {
-          "en": "attending the theater",
-          "zh": "去剧院观看演出",
-          "category": "B2 词汇",
-          "context": "attending the Moscow Marionette Theater"
-        },
-      ]
+      "usage": "回忆童年/家乡时的经典开场，后面接一个具体故事。适合 Part 2 童年记忆、难忘经历类话题。",
+      "ielts_example": "One of my favorite childhood memories was running through the rice paddies near my grandmother's house."
     },
     {
       "function": "举例说明",
-      "en": "The whole family said you wouldn't take it well. Ever since you moved to the city 'cause you couldn't hack it on the farm. 'Couldn't hack it'? Yeah, that's right.",
-      "highlight": "Ever since you moved to the city 'cause you couldn't hack it on the farm.",
+      "phrase": "couldn't hack it",
+      "meaning": "搞不定；撑不下去（口语）",
+      "example": "Ever since you moved to the city 'cause you couldn't hack it on the farm.",
       "source": "Modern Family S05E04",
-      "translation": "全家人都说你会受不了的。自从你搬到城里，就因为你在农场待不下去。\"待不下去\"？对，没错。",
-      "keywords": [
-        {
-          "en": "couldn't hack it",
-          "zh": "搞不定；撑不下去",
-          "category": "C1 口语习语",
-          "context": "you couldn't hack it on the farm"
-        },
-        {
-          "en": "take it well",
-          "zh": "坦然接受（这件事）",
-          "category": "B2 表达",
-          "context": "you wouldn't take it well"
-        },
-      ]
+      "usage": "口语化的「适应不了/撑不住」，解释某人离开某地或放弃某事的原因。适合描述从家乡搬到城市失败的经历。",
+      "ielts_example": "I tried living in the city for a year, but honestly, I couldn't hack it — the noise and the pace were too much."
     },
     {
       "function": "比较对比",
-      "en": "Christmas in Colombia was always hot and loud, people arguing, betrayal, schemes. So I rented a mountain cabin for the whole family to celebrate my first Christmas as an American.",
-      "highlight": "Christmas in Colombia was always hot and loud, people arguing, betrayal, schemes.",
+      "phrase": "X was always hot and loud",
+      "meaning": "家乡的……总是又热又吵（描述故乡特征）",
+      "example": "Christmas in Colombia was always hot and loud, people arguing, betrayal, schemes. So I rented a mountain cabin for the whole family to celebrate my first Christmas as an American.",
       "source": "Modern Family S07E09",
-      "translation": "哥伦比亚的圣诞节总是又热又吵，人们吵来吵去，还有背叛和阴谋。所以我在山上租了间小屋，让全家一起庆祝我作为美国人的第一个圣诞节。",
-      "keywords": [
-        {
-          "en": "betrayal and schemes",
-          "zh": "背叛与阴谋",
-          "category": "C1 词汇",
-          "context": "people arguing, betrayal, schemes"
-        },
-        {
-          "en": "rented a mountain cabin",
-          "zh": "租了一间山间小屋",
-          "category": "B2 词汇",
-          "context": "I rented a mountain cabin for the whole family"
-        },
-      ]
+      "usage": "用「家乡的 X 总是 + 形容词」描述故乡特征，再对比现在住的地方。是 Part 3 城乡对比、文化差异话题的绝佳句式。",
+      "ielts_example": "Festivals in my hometown are always loud and crowded, which is very different from the quiet celebrations here."
     },
     {
       "function": "总结收束",
-      "en": "My grandmother, who rests in peace, has been coming to me in my dreams, telling me that I'm losing touch with my roots. In our culture, we believe that the dead are all around us.",
-      "highlight": "I'm losing touch with my roots.",
+      "phrase": "losing touch with my roots",
+      "meaning": "与自己的根源/故乡渐行渐远",
+      "example": "My grandmother, who rests in peace, has been coming to me in my dreams, telling me that I'm losing touch with my roots.",
       "source": "Modern Family S02E02",
-      "translation": "我的祖母，愿她安息，一直在梦里告诉我，说我渐渐与自己的根源疏远了。在我们的文化里，我们相信逝者就在我们身边。",
-      "keywords": [
-        {
-          "en": "losing touch with my roots",
-          "zh": "与自己的根源/故乡渐行渐远",
-          "category": "C1 习语",
-          "context": "I'm losing touch with my roots"
-        },
-        {
-          "en": "who rests in peace",
-          "zh": "愿她安息（对逝者的敬语）",
-          "category": "B2 表达",
-          "context": "My grandmother, who rests in peace"
-        },
-      ]
+      "usage": "表达离开家乡久了、与本源疏远的感慨。适合 Part 3 讨论「年轻人离开家乡的影响」「传统是否被遗忘」。",
+      "ielts_example": "Many young people move to big cities and slowly lose touch with their roots — their hometown customs and family traditions."
     },
   ],
   "memorable-trip": [
@@ -4874,6 +4798,32 @@ function renderSnippetCards(exps, topicId) {
     </div>`;
 
     items.forEach(exp => {
+      // ── 新格式：表达为中心（phrase 字段存在）──
+      if (exp.phrase) {
+        const phSafe = (exp.phrase||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+        const exSafe = (exp.example||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+        const usSafe = (exp.usage||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+        const ieSafe = (exp.ielts_example||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+        const saved = (S.savedSnippetIds||[]).includes('p:'+phSafe.slice(0,40));
+        html += `<div class="snippet-card phrase-card">
+          <div class="phrase-main">${phSafe}</div>
+          <div class="phrase-meaning">${(exp.meaning||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}</div>
+          ${exSafe ? `<div class="phrase-example"><span class="ph-label">剧中</span><span class="ph-ex-text">"${exSafe}"</span><span class="ph-source">— ${exp.source||''}</span></div>` : ''}
+          ${usSafe ? `<div class="phrase-usage"><span class="ph-label ph-usage-label">怎么用</span><span class="ph-usage-text">${usSafe}</span></div>` : ''}
+          ${ieSafe ? `<div class="phrase-ielts"><span class="ph-label ph-ielts-label">雅思例句</span><span class="ph-ielts-text">"${ieSafe}"</span></div>` : ''}
+          <div class="card-footer">
+            <span class="card-source">${exp.source||''}</span>
+            <span class="card-actions">
+              <button class="act-btn" onclick="event.stopPropagation();speakSnippet('${exSafe}')" title="聆听">🔊</button>
+              <button class="act-btn" onclick="event.stopPropagation();practiceSnippet('${exSafe}')" title="跟读">🎤</button>
+              <button class="act-btn ${saved?'saved':''}" onclick="event.stopPropagation();toggleSnippet('p:${phSafe.slice(0,40).replace(/'/g,"\\'")}')" title="收藏">${saved?'❤️':'♡'}</button>
+            </span>
+          </div>
+        </div>`;
+        return;
+      }
+
+      // ── 旧格式：台词为中心（兼容保留）──
       const saved = (S.savedSnippetIds||[]).includes(exp.highlight.slice(0,40));
       const enSafe = (exp.en||'').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/\n/g,' ');
       const hlSafe = (exp.highlight||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
