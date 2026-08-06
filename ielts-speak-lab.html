@@ -3000,6 +3000,188 @@ const TOPIC_EXPRESSIONS = {
   ]
 }
 
+</script>
+
+<script>
+// ============================================================
+//  STATE
+// ============================================================
+const LS = 'reeltalk_v4';
+let S = JSON.parse(localStorage.getItem(LS)) || {};
+function save() { localStorage.setItem(LS, JSON.stringify(S)); }
+
+function initState() {
+  const defaults = {
+    xp:0, streak:0, lastDate:null,
+    activeTopic:null,
+    activeStyle:'mf',
+    selectedQuestionIndex:{},
+    expressions:[],
+    savedExprIds:[],
+    savedSnippetIds:[],
+    corpus:[],
+    profiles:[],
+    packLoaded:{},
+  };
+  for (const k in defaults) { if (!(k in S)) S[k] = defaults[k]; }
+  const today = new Date().toISOString().slice(0,10);
+  if (S.lastDate !== today) {
+    if (S.lastDate) {
+      const d1 = new Date(S.lastDate); const d2 = new Date(today);
+      const diff = Math.round((d2-d1)/86400000);
+      if (diff === 1) S.streak++; else if (diff > 1) S.streak = 0;
+    } else S.streak = 1;
+    S.lastDate = today;
+  }
+  save();
+}
+initState();
+
+// ============================================================
+//  TOPICS — 真实雅思口语问题库（2024-2025）
+// ============================================================
+const TOPIC_QUESTIONS = {
+  hometown: [
+    "Where is your hometown? What do you like most about it?",
+    "Has your hometown changed much in recent years?",
+    "Would you say your hometown is a good place for young people to live?",
+    "Do you plan to continue living in your hometown in the future?",
+  ],
+  'work-study': [
+    "Do you work or are you a student? What do you enjoy about it?",
+    "What was your first day like at your job or school?",
+    "Would you like to change your current job or major?",
+    "What kind of work do you hope to do in the future?",
+  ],
+  hobbies: [
+    "What do you do in your free time? How did you develop this hobby?",
+    "Are there any hobbies you used to enjoy but no longer do?",
+    "Do you prefer spending your free time alone or with others?",
+    "Is it important for people to have hobbies? Why?",
+  ],
+  food: [
+    "What kinds of food do you usually eat? Do you enjoy cooking?",
+    "Has your diet changed compared to when you were younger?",
+    "Do you prefer eating at home or dining out?",
+    "What is a traditional dish from your country you would recommend?",
+  ],
+  weather: [
+    "What kind of weather do you like best? Why?",
+    "Does the weather affect your mood or daily activities?",
+    "What do you usually do on rainy days?",
+    "Has the climate in your area changed compared to the past?",
+  ],
+  music: [
+    "What kind of music do you listen to? Has your taste changed over time?",
+    "Do you play any musical instruments? Would you like to learn one?",
+    "Do you prefer listening to music alone or at live concerts?",
+    "How important is music in your culture?",
+  ],
+  travel: [
+    "Do you enjoy traveling? What's the best trip you've ever taken?",
+    "What kind of places do you like to visit when you travel?",
+    "Do you prefer traveling alone or with companions?",
+    "How has travel changed in your country in recent years?",
+  ],
+  family: [
+    "How often do you spend time with your family? What do you do together?",
+    "Who are you closest to in your family? Why?",
+    "Do you think family relationships are changing in modern society?",
+    "What values did your family teach you growing up?",
+  ],
+  tech: [
+    "How often do you use technology in your daily life?",
+    "What piece of technology could you not live without?",
+    "Do you think technology makes life simpler or more complicated?",
+    "How has technology changed the way people communicate?",
+  ],
+  sports: [
+    "Do you play any sports or exercise regularly?",
+    "What sports are popular in your country?",
+    "Do you prefer watching sports or playing them?",
+    "How important is physical education for children?",
+  ],
+  // Part 2
+  'person-admire': [
+    "Describe a person you admire. You should say: who this person is, how you know them, what they have achieved, and explain why you admire them.",
+    "Describe someone who has had a significant influence on your life.",
+    "Describe a person who is good at what they do professionally.",
+  ],
+  'memorable-trip': [
+    "Describe a memorable trip you have taken. You should say: where you went, who you went with, what you did there, and explain why it was memorable.",
+    "Describe a place you visited that left a strong impression on you.",
+    "Describe a journey that didn't go as planned.",
+  ],
+  'important-event': [
+    "Describe an important event in your life. You should say: what the event was, when it happened, who was involved, and explain why it was important.",
+    "Describe a celebration or festival you attended that was special.",
+    "Describe a time when you helped someone.",
+  ],
+  'favorite-place': [
+    "Describe your favorite place in your city. You should say: where it is, how often you go there, what you do there, and explain why you like it.",
+    "Describe a quiet place you like to go to.",
+    "Describe a place you would like to visit in the future.",
+  ],
+  'book-movie': [
+    "Describe a book or movie that you really enjoyed. You should say: what it was about, when you read/watched it, who you'd recommend it to, and explain why you liked it.",
+    "Describe a story someone told you that you remember well.",
+    "Describe a TV show you have watched recently.",
+  ],
+  'skill-learned': [
+    "Describe a skill you learned that you find useful. You should say: what the skill is, how you learned it, how long it took, and explain why it's useful.",
+    "Describe something you taught yourself to do.",
+    "Describe a practical skill you think everyone should learn.",
+  ],
+  'childhood-memory': [
+    "Describe a happy childhood memory. You should say: what happened, where it took place, who was with you, and explain why it's a happy memory.",
+    "Describe a game or toy you enjoyed playing as a child.",
+    "Describe your best friend from childhood.",
+  ],
+  'difficult-decision': [
+    "Describe a difficult decision you once made. You should say: what the decision was, when you made it, how you made your choice, and explain how you felt about it.",
+    "Describe a time when you had to choose between two important things.",
+    "Describe a risk you took that paid off.",
+  ],
+  // Part 3
+  environment: [
+    "What are the biggest environmental problems facing the world today?",
+    "Do you think individuals can make a difference in protecting the environment?",
+    "Should governments prioritize economic growth over environmental protection?",
+    "How can schools educate children about environmental issues?",
+  ],
+  education: [
+    "What makes a good teacher? Has the role of teachers changed?",
+    "Do you think university education should be free for everyone?",
+    "How important are extracurricular activities in a child's education?",
+    "Is online learning as effective as traditional classroom learning?",
+  ],
+  culture: [
+    "How important is it to preserve traditional culture in a globalized world?",
+    "Do you think young people today value traditions less than previous generations?",
+    "How has globalization affected local cultures in your country?",
+    "Should traditional festivals be adapted to appeal to younger people?",
+  ],
+  'work-life': [
+    "Is it possible to achieve a good work-life balance in today's world?",
+    "Why do some people choose to work long hours?",
+    "How can companies support their employees' work-life balance?",
+    "Do you think the concept of work-life balance differs across cultures?",
+  ],
+  'social-media': [
+    "How has social media changed the way people interact with each other?",
+    "Do you think social media has a positive or negative impact on society?",
+    "Should there be stricter regulation of social media platforms?",
+    "How do you think social media will evolve in the next ten years?",
+  ],
+  urbanization: [
+    "Why do people continue to move from rural areas to cities?",
+    "What are the disadvantages of living in a big city?",
+    "How can cities be made more livable for their residents?",
+    "Do you think remote work will slow down urbanization?",
+  ],
+};
+
+
 // Auto-generated by v3_topic_thinking.py
 // Native speaker content thinking frameworks for each IELTS topic
 const TOPIC_THINKING = {
